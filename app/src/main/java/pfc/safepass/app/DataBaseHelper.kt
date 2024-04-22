@@ -18,6 +18,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_ICON = "icon"
         private const val COLUMN_LINK = "link"
         private const val COLUMN_PASSWORD = "password"
+        //hola
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
