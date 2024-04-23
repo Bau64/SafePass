@@ -75,7 +75,11 @@ class MainMenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+<<<<<<< Updated upstream
         if (dataBaseHelper.getPasswordCount() != passwordAdapter.itemCount)
+=======
+        //if (dataBaseHelper.getPasswordCount() != passwordAdapter.itemCount)
+>>>>>>> Stashed changes
             passwordAdapter.refreshData(dataBaseHelper.getAllPassword())
     }
 

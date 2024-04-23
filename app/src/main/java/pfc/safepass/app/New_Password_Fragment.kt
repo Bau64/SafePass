@@ -27,9 +27,17 @@ class New_Password_Fragment : Fragment() {
     private var update_id: Int = -1 // ID de la entrada a actualizar
     private var update_item: Pass_Item? = null // Entrada a actualizar
     private var update_mode = false // false = nueva contraseña ; true = actualizar contraseña
+<<<<<<< Updated upstream
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             val uriContent = result.uriContent
+=======
+    private var image_changed = false
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            val uriContent = result.uriContent
+            image_changed = true
+>>>>>>> Stashed changes
             binding.newPasswordImageView.setImageURI(uriContent) // Se aplica la imagen al imageview
         } else {
             // An error occurred.
@@ -72,6 +80,11 @@ class New_Password_Fragment : Fragment() {
     }
 
     private fun initUI(){
+<<<<<<< Updated upstream
+=======
+        binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
+
+>>>>>>> Stashed changes
         binding.newPasswordImageButton.setOnClickListener {
             startCrop()
         }
@@ -86,12 +99,26 @@ class New_Password_Fragment : Fragment() {
 
         // Si se esta actualizando una entrada, los campos se rellenaran con los datos de la entrada
         if (update_mode) {
+<<<<<<< Updated upstream
             binding.toolbar.title = getString(R.string.toolbar_edit_password)
             binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(update_item!!.id))
+=======
+            binding.newPasswordSaveBtn.isEnabled = true
+            binding.toolbar.title = getString(R.string.toolbar_edit_password)
+            //binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(update_item!!.id))
+>>>>>>> Stashed changes
             binding.newPasswordNickname.setText(update_item!!.nickname)
             binding.newPasswordPassword.setText(update_item!!.password)
             binding.newPasswordUsername.setText(update_item!!.user)
             binding.newPasswordLink.setText(update_item!!.link)
+<<<<<<< Updated upstream
+=======
+
+            if (update_item!!.icon == null)
+                binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
+            else
+                binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(update_item!!.id))
+>>>>>>> Stashed changes
         }
 
         // Recibir contraseña generada en caso de haberse guardado en el generador
@@ -154,22 +181,48 @@ class New_Password_Fragment : Fragment() {
     private fun savePassword(){
         val nickname = binding.newPasswordNickname.text.toString()
         val username = binding.newPasswordUsername.text.toString()
+<<<<<<< Updated upstream
         val icon = imgViewtoByteArray(binding.newPasswordImageView)
         val password = binding.newPasswordPassword.text.toString()
         val link = binding.newPasswordLink.text.toString()
+=======
+        val password = binding.newPasswordPassword.text.toString()
+        val link = binding.newPasswordLink.text.toString()
+        val icon: ByteArray?
+        if (image_changed){
+            icon = imgViewtoByteArray(binding.newPasswordImageView)
+        } else {
+            icon = null
+        }
+>>>>>>> Stashed changes
 
         if (update_mode) {
             val passwordItem = Pass_Item(update_item!!.id, nickname, username, password, link, icon)
             dataBaseHelper.updatePassword(passwordItem)
+<<<<<<< Updated upstream
             val activity = requireActivity() as MainMenuActivity
             activity.refreshData()
+=======
+            //val activity = requireActivity() as MainMenuActivity
+            //activity.refreshData()
+>>>>>>> Stashed changes
             Toast.makeText(context, getString(R.string.toast_edited_password), Toast.LENGTH_SHORT).show()
         } else {
             val passwordItem = Pass_Item(0, nickname, username, password, link, icon)
             dataBaseHelper.insertPassword(passwordItem)
+<<<<<<< Updated upstream
             Toast.makeText(context, getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()
         }
 
+=======
+            Toast.makeText(context, getString(R.string.toast_created_password), Toast.LENGTH_SHORT).show()
+        }
+
+        /*
+        val activity = requireActivity() as MainMenuActivity
+        activity.refreshData()
+        */
+>>>>>>> Stashed changes
         requireActivity().finish()
     }
 
@@ -182,6 +235,10 @@ class New_Password_Fragment : Fragment() {
 
     private fun byteArrayToBitmap(id: Int): Bitmap {
         val item = dataBaseHelper.getPasswordbyID(id)
+<<<<<<< Updated upstream
         return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon.size)
+=======
+        return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
+>>>>>>> Stashed changes
     }
 }

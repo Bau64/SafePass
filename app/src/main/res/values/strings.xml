@@ -43,6 +43,10 @@
     <string name="toolbar_edit_password">Editar contraseña</string>
     <string name="toast_edited_password">Contraseña editada</string>
     <string name="toast_deleted_password">Contraseña eliminada</string>
+<<<<<<< Updated upstream
+=======
+    <string name="toast_created_password">Contraseña creada</string>
+>>>>>>> Stashed changes
     <string name="edit">Editar</string>
     <string name="delete">Borrar</string>
     <string name="options">Opciones</string>

@@ -1,4 +1,8 @@
 package pfc.safepass.app
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -18,7 +22,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+<<<<<<< Updated upstream
 //import pfc.safepass.app.DataBaseHelper
+=======
+>>>>>>> Stashed changes
 
 class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
 
@@ -44,7 +51,14 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
         val id = password.id
         holder.nickname.text = password.nickname
         holder.username.text = password.user
+<<<<<<< Updated upstream
         holder.icon.setImageBitmap(byteArrayToBitmap(id))
+=======
+        if (byteArrayToBitmap(id) != null)
+            holder.icon.setImageBitmap(byteArrayToBitmap(id))
+        else
+            holder.icon.setImageResource(R.drawable.icon_default_password)
+>>>>>>> Stashed changes
         val pwd = password.password
         //val link = password.link
 
@@ -67,7 +81,12 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
             builder.setItems(opciones) { _, opciones ->
                 when (opciones) {
                     0 -> {update(context, id)}
+<<<<<<< Updated upstream
                     1 -> {delete(id); Toast.makeText(context, Resources.getSystem().getString(R.string.toolbar_edit_password), Toast.LENGTH_SHORT).show()}
+=======
+                    //1 -> {delete(id); Toast.makeText(context, Resources.getSystem().getString(R.string.toolbar_edit_password), Toast.LENGTH_SHORT).show()}
+                    1 -> {delete(id); Toast.makeText(context, "Contraseña eliminada", Toast.LENGTH_SHORT).show()}
+>>>>>>> Stashed changes
                 }
             }
             val dialog = builder.create()
@@ -107,9 +126,18 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
      * Convierte byteArray de imagen en base de datos a bitmap para verse en la imagen de la entrada
      * @return Bitmap
      */
+<<<<<<< Updated upstream
     fun byteArrayToBitmap(id: Int): Bitmap {
         val item = dataBaseHelper.getPasswordbyID(id)
         return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon.size)
+=======
+    fun byteArrayToBitmap(id: Int): Bitmap? {
+        val item = dataBaseHelper.getPasswordbyID(id)
+        if (item!!.icon == null)
+            return null
+        else
+            return BitmapFactory.decodeByteArray(item.icon, 0, item.icon!!.size)
+>>>>>>> Stashed changes
     }
 
     /**
