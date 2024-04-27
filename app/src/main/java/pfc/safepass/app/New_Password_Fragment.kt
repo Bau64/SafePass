@@ -1,5 +1,8 @@
 package pfc.safepass.app
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -11,6 +14,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.canhub.cropper.CropImageContract
@@ -27,21 +31,11 @@ class New_Password_Fragment : Fragment() {
     private var update_id: Int = -1 // ID de la entrada a actualizar
     private var update_item: Pass_Item? = null // Entrada a actualizar
     private var update_mode = false // false = nueva contraseña ; true = actualizar contraseña
-<<<<<<< Updated upstream
+    private lateinit var defaultImg_byteArray: ByteArray // ByteArray de la imagen por defecto usada cuando el usuario no elige una imagen
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             val uriContent = result.uriContent
-=======
-    private var image_changed = false
-    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
-        if (result.isSuccessful) {
-            val uriContent = result.uriContent
-            image_changed = true
->>>>>>> Stashed changes
             binding.newPasswordImageView.setImageURI(uriContent) // Se aplica la imagen al imageview
-        } else {
-            // An error occurred.
-            val exception = result.error
         }
     }
 
@@ -57,6 +51,8 @@ class New_Password_Fragment : Fragment() {
             update_item = dataBaseHelper.getPasswordbyID(update_id)
             update_mode = true
         }
+
+        defaultImg_byteArray = ImgtoByteArray(ContextCompat.getDrawable(requireContext(), R.drawable.icon_default_password)!!.toBitmap())
     }
 
     companion object {
@@ -80,11 +76,8 @@ class New_Password_Fragment : Fragment() {
     }
 
     private fun initUI(){
-<<<<<<< Updated upstream
-=======
         binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
 
->>>>>>> Stashed changes
         binding.newPasswordImageButton.setOnClickListener {
             startCrop()
         }
@@ -99,26 +92,18 @@ class New_Password_Fragment : Fragment() {
 
         // Si se esta actualizando una entrada, los campos se rellenaran con los datos de la entrada
         if (update_mode) {
-<<<<<<< Updated upstream
-            binding.toolbar.title = getString(R.string.toolbar_edit_password)
-            binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(update_item!!.id))
-=======
             binding.newPasswordSaveBtn.isEnabled = true
             binding.toolbar.title = getString(R.string.toolbar_edit_password)
-            //binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(update_item!!.id))
->>>>>>> Stashed changes
+
             binding.newPasswordNickname.setText(update_item!!.nickname)
             binding.newPasswordPassword.setText(update_item!!.password)
             binding.newPasswordUsername.setText(update_item!!.user)
             binding.newPasswordLink.setText(update_item!!.link)
-<<<<<<< Updated upstream
-=======
 
             if (update_item!!.icon == null)
                 binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
             else
                 binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(update_item!!.id))
->>>>>>> Stashed changes
         }
 
         // Recibir contraseña generada en caso de haberse guardado en el generador
@@ -181,64 +166,36 @@ class New_Password_Fragment : Fragment() {
     private fun savePassword(){
         val nickname = binding.newPasswordNickname.text.toString()
         val username = binding.newPasswordUsername.text.toString()
-<<<<<<< Updated upstream
-        val icon = imgViewtoByteArray(binding.newPasswordImageView)
         val password = binding.newPasswordPassword.text.toString()
         val link = binding.newPasswordLink.text.toString()
-=======
-        val password = binding.newPasswordPassword.text.toString()
-        val link = binding.newPasswordLink.text.toString()
-        val icon: ByteArray?
-        if (image_changed){
-            icon = imgViewtoByteArray(binding.newPasswordImageView)
-        } else {
+        var icon: ByteArray? = ImgtoByteArray(binding.newPasswordImageView.drawable.toBitmap())
+
+        // Se verifica si la imagen es distinta a la imagen por defecto usando el ByteArray de ambas imagenes
+        if (icon.contentEquals(defaultImg_byteArray)) {
             icon = null
         }
->>>>>>> Stashed changes
 
         if (update_mode) {
             val passwordItem = Pass_Item(update_item!!.id, nickname, username, password, link, icon)
             dataBaseHelper.updatePassword(passwordItem)
-<<<<<<< Updated upstream
-            val activity = requireActivity() as MainMenuActivity
-            activity.refreshData()
-=======
-            //val activity = requireActivity() as MainMenuActivity
-            //activity.refreshData()
->>>>>>> Stashed changes
             Toast.makeText(context, getString(R.string.toast_edited_password), Toast.LENGTH_SHORT).show()
         } else {
             val passwordItem = Pass_Item(0, nickname, username, password, link, icon)
             dataBaseHelper.insertPassword(passwordItem)
-<<<<<<< Updated upstream
-            Toast.makeText(context, getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()
-        }
-
-=======
             Toast.makeText(context, getString(R.string.toast_created_password), Toast.LENGTH_SHORT).show()
         }
 
-        /*
-        val activity = requireActivity() as MainMenuActivity
-        activity.refreshData()
-        */
->>>>>>> Stashed changes
         requireActivity().finish()
     }
 
-    fun imgViewtoByteArray(imgview: ImageView): ByteArray {
-        val bmp: Bitmap = imgview.drawable.toBitmap()
+    private fun ImgtoByteArray(img: Bitmap): ByteArray {
         val stream = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        img.compress(Bitmap.CompressFormat.PNG, 100, stream)
         return stream.toByteArray()
     }
 
     private fun byteArrayToBitmap(id: Int): Bitmap {
         val item = dataBaseHelper.getPasswordbyID(id)
-<<<<<<< Updated upstream
-        return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon.size)
-=======
         return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
->>>>>>> Stashed changes
     }
 }

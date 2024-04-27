@@ -1,5 +1,6 @@
 package pfc.safepass.app
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 //import pfc.bautistaczupil.safepass.databinding.MainMenuBinding
 import pfc.safepass.app.databinding.MainMenuBinding
 
@@ -75,11 +77,7 @@ class MainMenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-<<<<<<< Updated upstream
-        if (dataBaseHelper.getPasswordCount() != passwordAdapter.itemCount)
-=======
         //if (dataBaseHelper.getPasswordCount() != passwordAdapter.itemCount)
->>>>>>> Stashed changes
             passwordAdapter.refreshData(dataBaseHelper.getAllPassword())
     }
 

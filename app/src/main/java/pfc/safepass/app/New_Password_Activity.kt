@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import pfc.safepass.app.databinding.ActivityNewPasswordBinding
 
-//import pfc.bautistaczupil.safepass.databinding.ActivityNewPasswordBinding
-
 class New_Password_Activity : AppCompatActivity() {
     private lateinit var binding: ActivityNewPasswordBinding
     private lateinit var dataBaseHelper: DataBaseHelper

@@ -24,12 +24,8 @@
             android:src="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-<<<<<<< Updated upstream
-            app:shapeAppearanceOverlay="@style/circleImageView" />
-=======
             app:shapeAppearanceOverlay="@style/circleImageView"
             app:srcCompat="@drawable/icon_default_password" />
->>>>>>> Stashed changes
 
         <TextView
             android:id="@+id/lbl_item_service_name"
