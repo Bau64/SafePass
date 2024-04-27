@@ -85,5 +85,6 @@ class LoginActivity : AppCompatActivity() {
 
     fun goToMainMenu(){
         startActivity(Intent(this, MainMenuActivity::class.java))
+        overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out)
     }
 }

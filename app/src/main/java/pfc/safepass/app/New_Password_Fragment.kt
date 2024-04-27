@@ -1,8 +1,5 @@
 package pfc.safepass.app
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -10,11 +7,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.canhub.cropper.CropImageContract
@@ -22,7 +17,6 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import pfc.safepass.app.databinding.FragmentNewPasswordBinding
-//import pfc.bautistaczupil.safepass.databinding.FragmentNewPasswordBinding
 import java.io.ByteArrayOutputStream
 
 class New_Password_Fragment : Fragment() {
@@ -137,7 +131,9 @@ class New_Password_Fragment : Fragment() {
     }
 
     private fun goToPasswordGenerator(){
-        parentFragmentManager.beginTransaction().replace(R.id.fragmentContainerView, New_Password_Generator_Fragment())
+        parentFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_left, R.anim.slide_right, R.anim.slide_left, R.anim.slide_right)
+            .replace(R.id.fragmentContainerView, New_Password_Generator_Fragment())
             .addToBackStack(null).commit()
     }
 

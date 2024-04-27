@@ -24,4 +24,9 @@ class New_Password_Activity : AppCompatActivity() {
                 .commit()
         }
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_top_1, R.anim.slide_bottom_1)
+    }
 }

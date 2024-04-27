@@ -44,6 +44,7 @@
     <string name="toast_edited_password">Contraseña editada</string>
     <string name="toast_deleted_password">Contraseña eliminada</string>
     <string name="toast_created_password">Contraseña creada</string>
+    <string name="toast_created_press_exit">Presiona otra vez para salir</string>
     <string name="edit">Editar</string>
     <string name="delete">Borrar</string>
     <string name="options">Opciones</string>
