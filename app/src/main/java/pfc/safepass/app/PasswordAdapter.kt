@@ -120,6 +120,17 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
             return BitmapFactory.decodeByteArray(item.icon, 0, item.icon!!.size)
     }
 
+    fun filterByName(text: String) {
+        val filteredList = mutableListOf<Pass_Item>()
+
+        for (item in passList) {
+            if (item.nickname.contains(text, true))
+                filteredList.add(item)
+        }
+        passList = filteredList
+        notifyDataSetChanged()
+    }
+
     /**
      * Copia la contraseña del item al portapapeles
      * @param context Contexto actual

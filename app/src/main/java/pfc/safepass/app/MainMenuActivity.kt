@@ -6,12 +6,12 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-//import pfc.bautistaczupil.safepass.databinding.MainMenuBinding
 import pfc.safepass.app.databinding.MainMenuBinding
 
 class MainMenuActivity : AppCompatActivity() {
@@ -30,6 +30,25 @@ class MainMenuActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_principal, menu)
+
+        val searchItem = menu?.findItem(R.id.menuItem_search)
+        if (searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText!!.isNotEmpty())
+                        passwordAdapter.filterByName(newText)
+                    else
+                        passwordAdapter.refreshData(dataBaseHelper.getAllPassword())
+                    return true
+                }
+
+            })
+        }
         return true
     }
 
@@ -46,11 +65,6 @@ class MainMenuActivity : AppCompatActivity() {
               return true
           }
 
-          R.id.menuItem_search -> {
-              // Iniciar busqueda de items por texto
-              TODO("Implementar busqueda")
-              return true
-          }
           else -> super.onOptionsItemSelected(item)
         }
     }
