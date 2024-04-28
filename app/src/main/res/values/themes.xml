@@ -3,14 +3,15 @@
     <style name="Base.Theme.SafePass" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/app_blue</item>
-        <item name="titleTextColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
-    <style name="circleImageView" parent="">
+    <style name="circleImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
     <style name="Theme.SafePass" parent="Base.Theme.SafePass">
+
     </style>
 </resources>

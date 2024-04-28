@@ -13,6 +13,7 @@
         android:id="@+id/menuItem_search"
         android:icon="@drawable/menu_search"
         app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView"
         android:iconTint="@color/white"
         android:title="@string/menuItem_search" />
 
