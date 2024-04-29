@@ -1,11 +1,16 @@
 package pfc.safepass.app
 
 import android.content.ClipData
+import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+//import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,15 +69,13 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
         holder.itemView.setOnLongClickListener {
             val context = holder.itemView.context
             val builder = AlertDialog.Builder(context)
-            //builder.setTitle(Resources.getSystem().getString(R.string.options))
-            builder.setTitle("Opciones")
-            //val opciones = arrayOf(Resources.getSystem().getString(R.string.edit), Resources.getSystem().getString(R.string.delete)) // Opciones del dialog (Editar, Borrar)
-            val opciones = arrayOf("Editar", "Borrar")
+            builder.setTitle(context.getString(R.string.options))
+            val opciones = arrayOf(context.getString(R.string.edit), context.getString(R.string.delete))
+
             builder.setItems(opciones) { _, opciones ->
                 when (opciones) {
                     0 -> {update(context, id)}
-                    //1 -> {delete(id); Toast.makeText(context, Resources.getSystem().getString(R.string.toolbar_edit_password), Toast.LENGTH_SHORT).show()}
-                    1 -> {delete(id); Toast.makeText(context, "Contraseña eliminada", Toast.LENGTH_SHORT).show()}
+                    1 -> {delete(id); Toast.makeText(context, context.getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()}
                 }
             }
             val dialog = builder.create()

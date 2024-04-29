@@ -4,6 +4,7 @@
         <!-- Customize your dark theme here. -->
         <item name="colorPrimary">@color/app_blue</item>
         <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorTertiary">@color/white</item>
     </style>
 
     <style name="app.buttons" parent="Widget.Material3.Button">

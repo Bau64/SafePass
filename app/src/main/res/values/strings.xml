@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SafePass</string>
-    <string name="main_menu">Menu Principal</string>
+    <string name="main_menu">Lista de contraseñas</string>
     <string name="new_password">Nueva Contraseña</string>
     <string name="nickname">Apodo</string>
     <string name="username">Usuario</string>
@@ -45,6 +45,7 @@
     <string name="toast_deleted_password">Contraseña eliminada</string>
     <string name="toast_created_password">Contraseña creada</string>
     <string name="toast_created_press_exit">Presiona otra vez para salir</string>
+    <string name="toast_copied_password">Contraseña copiada</string>
     <string name="edit">Editar</string>
     <string name="delete">Borrar</string>
     <string name="options">Opciones</string>
