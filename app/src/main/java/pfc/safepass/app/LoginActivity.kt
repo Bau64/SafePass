@@ -48,6 +48,7 @@ class LoginActivity : AppCompatActivity() {
         binding.btnLogin.setOnClickListener {
             val user_pwd = binding.passwordText.text.toString()
             if (user_pwd == prefs.getMasterPWD()) {
+                prefs.saveLoggedStatus(true)
                 goToMainMenu()
                 finish()
             } else {

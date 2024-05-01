@@ -59,6 +59,7 @@ class MainMenuActivity : AppCompatActivity() {
               return true
           }
           R.id.menuItem_lock -> {
+              Preferences(applicationContext).clearSession()
               goToLogin()
               Toast.makeText(this, getString(R.string.database_locked), Toast.LENGTH_SHORT).show()
               finish()
