@@ -32,6 +32,10 @@ class Preferences(context: Context) {
         prefs.edit().putBoolean(prefs_timeout_active, state).apply()
     }
 
+    fun eraseMasterPWD() {
+        prefs.edit().remove(prefs_masterPWD).apply()
+    }
+
     // Tiempo de inicio automatico (en milisegundos)
     private var SESSION_TIMEOUT = prefs.getInt(prefs_last_sessionTimeout, 5) * 60 * 1000
 
@@ -76,10 +80,6 @@ class Preferences(context: Context) {
 
     fun getLoggedStatus():Boolean{
         return prefs.getBoolean(prefs_logged_status, false)
-    }
-
-    fun getSessionTimeout(): Int {
-        return SESSION_TIMEOUT
     }
 
     /**

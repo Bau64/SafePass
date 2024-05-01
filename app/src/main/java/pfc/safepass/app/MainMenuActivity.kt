@@ -106,7 +106,7 @@ class MainMenuActivity : AppCompatActivity() {
         doubleBackPressed = true
         Toast.makeText(this, getString(R.string.toast_created_press_exit), Toast.LENGTH_SHORT).show()
         // Si el usuario presiona ATRAS dentro de 2 segundos, saldra de la aplicación
-        Handler(Looper.getMainLooper()).postDelayed(Runnable { doubleBackPressed = false }, 2000)
+        Handler(Looper.getMainLooper()).postDelayed({ doubleBackPressed = false }, 2000)
     }
 
     override fun onResume() {

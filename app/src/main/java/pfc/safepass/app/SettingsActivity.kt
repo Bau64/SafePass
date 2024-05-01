@@ -2,6 +2,7 @@ package pfc.safepass.app
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -34,7 +35,7 @@ class SettingsActivity : AppCompatActivity() {
             //automatic_login_switch?.isChecked = prefs.getSessionTimeout() > 0
             automatic_login_switch?.isChecked = prefs.getTimeoutState()
             automatic_login_switch?.setOnPreferenceChangeListener { _, newValue ->
-                var switch = newValue as Boolean
+                val switch = newValue as Boolean
                 if (!switch) { // inicio automatico desactivado
                     prefs.setTimeoutState(false)
                     prefs.clearSession()
@@ -53,8 +54,29 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val changeMasterPWD_preference = findPreference<Preference>("change_masterPWD")
-            changeMasterPWD_preference?.setOnPreferenceChangeListener { preference, newValue ->
+            changeMasterPWD_preference?.setOnPreferenceClickListener {
+                val context = requireContext()
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(context.getString(R.string.dialog_resetMasterPWD_title))
+                builder.setMessage(context.getString(R.string.dialog_resetMasterPWD_message))
 
+                builder.setPositiveButton(context.getString(R.string.ok)) { dialog, _ ->
+                    prefs.eraseMasterPWD()
+                    dialog.dismiss()
+                    requireActivity().apply {
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        startActivity(intent)
+                        finishAffinity() // Finaliza todas las actividades
+                    }
+                }
+
+                builder.setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+
+                val dialog = builder.create()
+                dialog.show()
                 true
             }
         }

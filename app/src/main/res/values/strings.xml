@@ -33,6 +33,7 @@
     <string name="toolbar_addPassword">Añadir contraseña</string>
     <string name="toolbar_generatePassword">Generar contraseña</string>
     <string name="cancel">Cancelar</string>
+    <string name="ok">OK</string>
     <string name="error_checkboxes">Debes elegir almenos una casilla</string>
     <string name="error_size">El tamaño de la contraseña debe ser entre 4 y 64</string>
     <string name="error_size_empty">El tamaño no puede estar vacio</string>
@@ -57,4 +58,6 @@
     <string name="settings_title_automaticLogin_time">Tiempo de inicio automatico</string>
     <string name="settings_title_changeMasterPWD"><font color="#FF0000">Cambiar contraseña maestra</font></string>
     <string name="settings_title_changeMasterPWD_info">Reemplaza la contraseña maestra por una nueva</string>
+    <string name="dialog_resetMasterPWD_title">¿Estas seguro?</string>
+    <string name="dialog_resetMasterPWD_message">Estas por cambiar la contraseña maestra ya establecida por otra nueva que estas a punto de crear</string>
 </resources>
