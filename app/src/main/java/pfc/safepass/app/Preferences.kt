@@ -1,17 +1,16 @@
 package pfc.safepass.app
 
 import android.content.Context
-import android.content.Context.MODE_PRIVATE
-import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import androidx.security.crypto.MasterKeys
 
 class Preferences(context: Context) {
     private val PREFS_NAME = "pfc.safepass.mypreferences"
     private val prefs_masterPWD = "masterPWD"
     private val prefs_logged_status = "loggedStatus"
     private val prefs_session_start_time = "sessionStartTime"
+    private val prefs_last_sessionTimeout = "last_timeout"
+    private var prefs_timeout_active = "timeout_active"
 
     // Encriptar preferencias
     private val masterKey = MasterKey.Builder(context)
@@ -25,8 +24,31 @@ class Preferences(context: Context) {
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
     )
 
-    // Tiempo de inicio automatico (primer numero en minutos)
-    private val SESSION_TIMEOUT = 1 * 60 * 1000
+    fun getLastSessionTimeout(): Int {
+        return prefs.getInt("last_timeout", 5)
+    }
+
+    fun setTimeoutState(state: Boolean) {
+        prefs.edit().putBoolean(prefs_timeout_active, state).apply()
+    }
+
+    // Tiempo de inicio automatico (en milisegundos)
+    private var SESSION_TIMEOUT = prefs.getInt(prefs_last_sessionTimeout, 5) * 60 * 1000
+
+    /**
+     * Establece el tiempo en minutos de la duracion del inicio de sesion automatico
+     * @param minutes los minutos que se podra iniciar sin pedir contraseña
+     */
+    fun setSessionTimeout(minutes: Int) {
+        prefs.edit().putInt("last_timeout", minutes).apply()
+        SESSION_TIMEOUT = prefs.getInt("last_timeout", 5) * 60 * 1000
+    }
+
+
+
+    fun getTimeoutState(): Boolean {
+        return prefs.getBoolean(prefs_timeout_active, true)
+    }
 
     /**
      * Guarda la contraseña maestra en las preferencias
@@ -54,6 +76,10 @@ class Preferences(context: Context) {
 
     fun getLoggedStatus():Boolean{
         return prefs.getBoolean(prefs_logged_status, false)
+    }
+
+    fun getSessionTimeout(): Int {
+        return SESSION_TIMEOUT
     }
 
     /**

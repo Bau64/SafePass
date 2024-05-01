@@ -1,0 +1,29 @@
+<resources>
+    <!-- Preference -->
+    <string-array name="automatic_login_options">
+        <item>1 Minuto</item>
+        <item>2 Minutos</item>
+        <item>3 Minutos</item>
+        <item>4 Minutos</item>
+        <item>5 Minutos</item>
+        <item>6 Minutos</item>
+        <item>7 Minutos</item>
+        <item>8 Minutos</item>
+        <item>9 Minutos</item>
+        <item>10 Minutos</item>
+    </string-array>
+
+    <!-- Values -->
+    <string-array name="automatic_login_options_values">
+        <item name="automatic_minutes_1_value">1</item>
+        <item name="automatic_minutes_2_value">2</item>
+        <item name="automatic_minutes_3_value">3</item>
+        <item name="automatic_minutes_4_value">4</item>
+        <item name="automatic_minutes_5_value">5</item>
+        <item name="automatic_minutes_6_value">6</item>
+        <item name="automatic_minutes_7_value">7</item>
+        <item name="automatic_minutes_8_value">8</item>
+        <item name="automatic_minutes_9_value">9</item>
+        <item name="automatic_minutes_10_value">10</item>
+    </string-array>
+</resources>

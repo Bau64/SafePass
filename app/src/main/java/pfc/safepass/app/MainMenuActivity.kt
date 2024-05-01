@@ -65,6 +65,10 @@ class MainMenuActivity : AppCompatActivity() {
               finish()
               return true
           }
+          R.id.menuItem_settings -> {
+              goToSettings()
+              return true
+          }
 
           else -> super.onOptionsItemSelected(item)
         }
@@ -78,6 +82,10 @@ class MainMenuActivity : AppCompatActivity() {
     private fun goToAddPassword(){
         startActivity(Intent(this, New_Password_Activity::class.java))
         overridePendingTransition(R.anim.slide_bottom_2, R.anim.slide_top_2)
+    }
+
+    private fun goToSettings() {
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 
     private fun initUI(){

@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val prefs = Preferences(applicationContext)
         // Si hay una clave maestra creada previamente se ira directo a la pantalla de login
         if (prefs.getMasterPWD().isNotEmpty()){
-            if (prefs.getLoggedStatus() && prefs.isSessionActive()) {
+            if (prefs.getLoggedStatus() && prefs.isSessionActive() && prefs.getTimeoutState()) {
                 goToMainMenu()
             } else {
                 goToLogin()

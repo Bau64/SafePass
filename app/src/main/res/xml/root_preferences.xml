@@ -1,0 +1,25 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/settings_header_general">
+
+        <SwitchPreferenceCompat
+            app:key="automaticLogin"
+            app:title="@string/settings_title_automaticLogin" />
+
+        <ListPreference
+            app:dependency="automaticLogin"
+            app:defaultValue="5"
+            app:entries="@array/automatic_login_options"
+            app:entryValues="@array/automatic_login_options_values"
+            app:key="automaticLogin_time"
+            app:title="@string/settings_title_automaticLogin_time"
+            app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            app:key="change_masterPWD"
+            app:title="@string/settings_title_changeMasterPWD"
+            app:summary="@string/settings_title_changeMasterPWD_info" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

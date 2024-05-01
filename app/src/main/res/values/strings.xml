@@ -25,6 +25,7 @@
     <string name="login_text">Introduce la clave maestra para desbloquear la base de datos</string>
     <string name="menuItem_addPassword">Crear nueva contraseña</string>
     <string name="menuItem_lock">Bloquear la base de datos</string>
+    <string name="menuItem_settings">Configuración</string>
     <string name="database_locked">Base de datos cerrada con exito</string>
     <string name="biometric_title">Autenticacion Biometrica</string>
     <string name="biometric_subtitle">Usa tu huella para desbloquear la base de datos</string>
@@ -50,4 +51,10 @@
     <string name="delete">Borrar</string>
     <string name="options">Opciones</string>
     <string name="toolbar_cropTitle">Recortar imagen</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="settings_header_general">General</string>
+    <string name="settings_title_automaticLogin">Inicio de sesion automatico</string>
+    <string name="settings_title_automaticLogin_time">Tiempo de inicio automatico</string>
+    <string name="settings_title_changeMasterPWD"><font color="#FF0000">Cambiar contraseña maestra</font></string>
+    <string name="settings_title_changeMasterPWD_info">Reemplaza la contraseña maestra por una nueva</string>
 </resources>

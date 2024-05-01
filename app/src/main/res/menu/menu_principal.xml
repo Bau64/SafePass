@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuItem_addNew"
-        android:icon="@drawable/texfield_add"
-        app:showAsAction="ifRoom"
-        android:iconTint="@color/white"
-        android:title="@string/menuItem_addPassword" />
-
-    <item
         android:id="@+id/menuItem_search"
         android:icon="@drawable/menu_search"
         app:showAsAction="ifRoom|collapseActionView"
@@ -18,9 +11,23 @@
         android:title="@string/menuItem_search" />
 
     <item
+        android:id="@+id/menuItem_addNew"
+        android:icon="@drawable/texfield_add"
+        app:showAsAction="ifRoom"
+        android:iconTint="@color/white"
+        android:title="@string/menuItem_addPassword" />
+
+    <item
         android:id="@+id/menuItem_lock"
         android:icon="@drawable/textfield_lock"
         app:showAsAction="ifRoom"
         android:iconTint="@color/white"
         android:title="@string/menuItem_lock" />
+
+    <item
+        android:id="@+id/menuItem_settings"
+        android:icon="@drawable/icon_settings"
+        app:showAsAction="ifRoom"
+        android:iconTint="@color/white"
+        android:title="@string/menuItem_settings" />
 </menu>
