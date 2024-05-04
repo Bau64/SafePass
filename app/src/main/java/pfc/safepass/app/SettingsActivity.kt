@@ -17,6 +17,8 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = SettingsActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
@@ -26,13 +28,23 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.stay, R.anim.slide_right)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        overridePendingTransition(R.anim.stay, R.anim.slide_right)
+        super.onBackPressed()
+        return true
+    }
+
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
             val prefs = Preferences(requireContext())
 
             val automatic_login_switch = findPreference<SwitchPreferenceCompat>("automaticLogin")
-            //automatic_login_switch?.isChecked = prefs.getSessionTimeout() > 0
             automatic_login_switch?.isChecked = prefs.getTimeoutState()
             automatic_login_switch?.setOnPreferenceChangeListener { _, newValue ->
                 val switch = newValue as Boolean

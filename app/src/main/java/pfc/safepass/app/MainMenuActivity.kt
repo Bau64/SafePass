@@ -86,6 +86,7 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun goToSettings() {
         startActivity(Intent(this, SettingsActivity::class.java))
+        overridePendingTransition(R.anim.slide_left, R.anim.stay)
     }
 
     private fun initUI(){

@@ -18,6 +18,9 @@ import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import pfc.safepass.app.databinding.FragmentNewPasswordBinding
 import java.io.ByteArrayOutputStream
+import java.time.DateTimeException
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class New_Password_Fragment : Fragment() {
     private lateinit var binding: FragmentNewPasswordBinding
@@ -92,7 +95,7 @@ class New_Password_Fragment : Fragment() {
             binding.newPasswordNickname.setText(update_item!!.nickname)
             binding.newPasswordPassword.setText(update_item!!.password)
             binding.newPasswordUsername.setText(update_item!!.user)
-            binding.newPasswordLink.setText(update_item!!.link)
+            binding.newPasswordNotes.setText(update_item!!.notes)
 
             if (update_item!!.icon == null)
                 binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
@@ -163,7 +166,7 @@ class New_Password_Fragment : Fragment() {
         val nickname = binding.newPasswordNickname.text.toString()
         val username = binding.newPasswordUsername.text.toString()
         val password = binding.newPasswordPassword.text.toString()
-        val link = binding.newPasswordLink.text.toString()
+        val notes = binding.newPasswordNotes.text.toString()
         var icon: ByteArray? = ImgtoByteArray(binding.newPasswordImageView.drawable.toBitmap())
 
         // Se verifica si la imagen es distinta a la imagen por defecto usando el ByteArray de ambas imagenes
@@ -172,11 +175,11 @@ class New_Password_Fragment : Fragment() {
         }
 
         if (update_mode) {
-            val passwordItem = Pass_Item(update_item!!.id, nickname, username, password, link, icon)
+            val passwordItem = Pass_Item(update_item!!.id, nickname, username, password, notes, icon, getCurrentDate())
             dataBaseHelper.updatePassword(passwordItem)
             Toast.makeText(context, getString(R.string.toast_edited_password), Toast.LENGTH_SHORT).show()
         } else {
-            val passwordItem = Pass_Item(0, nickname, username, password, link, icon)
+            val passwordItem = Pass_Item(0, nickname, username, password, notes, icon, getCurrentDate())
             dataBaseHelper.insertPassword(passwordItem)
             Toast.makeText(context, getString(R.string.toast_created_password), Toast.LENGTH_SHORT).show()
         }
@@ -193,5 +196,14 @@ class New_Password_Fragment : Fragment() {
     private fun byteArrayToBitmap(id: Int): Bitmap {
         val item = dataBaseHelper.getPasswordbyID(id)
         return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
+    }
+
+    fun getCurrentDate(): String {
+        val currentDate = LocalDate.now()
+
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatedDate = currentDate.format(formatter)
+
+        return formatedDate
     }
 }

@@ -16,13 +16,13 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         private const val COLUMN_NICKNAME = "nickname"
         private const val COLUMN_USERNAME = "username"
         private const val COLUMN_ICON = "icon"
-        private const val COLUMN_LINK = "link"
         private const val COLUMN_PASSWORD = "password"
-        //hola
+        private const val COLUMN_NOTES = "notes"
+        private const val COLUMN_DATE = "date"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_NICKNAME TEXT NOT NULL, $COLUMN_USERNAME TEXT, $COLUMN_ICON BLOB, $COLUMN_PASSWORD TEXT NOT NULL, $COLUMN_LINK TEXT)")
+        db?.execSQL("CREATE TABLE $TABLE_NAME ($COLUMN_ID INTEGER PRIMARY KEY, $COLUMN_NICKNAME TEXT NOT NULL, $COLUMN_USERNAME TEXT, $COLUMN_ICON BLOB, $COLUMN_PASSWORD TEXT NOT NULL, $COLUMN_NOTES TEXT, $COLUMN_DATE TEXT NOT NULL)")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -41,7 +41,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_USERNAME, passItem.user)
             put(COLUMN_ICON, passItem.icon)
             put(COLUMN_PASSWORD, passItem.password)
-            put(COLUMN_LINK, passItem.link)
+            put(COLUMN_NOTES, passItem.notes)
+            put(COLUMN_DATE, passItem.date)
         }
         db.insert(TABLE_NAME, null, values)
         db.close()
@@ -62,9 +63,10 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME))
             val icon = cursor.getBlob(cursor.getColumnIndexOrThrow(COLUMN_ICON))
             val password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
-            val link = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LINK))
+            val notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES))
+            val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
 
-            val passwordItem = Pass_Item(id, nickname, username, password, link, icon)
+            val passwordItem = Pass_Item(id, nickname, username, password, notes, icon, date)
             passList.add(passwordItem)
         }
 
@@ -89,9 +91,10 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val username = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME))
             val icon = cursor.getBlob(cursor.getColumnIndexOrThrow(COLUMN_ICON))
             val password = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PASSWORD))
-            val link = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LINK))
+            val notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES))
+            val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
 
-            passItem = Pass_Item(id, nickname, username, password, link, icon)
+            passItem = Pass_Item(id, nickname, username, password, notes, icon, date)
         }
 
         cursor.close()
@@ -126,7 +129,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_USERNAME, passItem.user)
             put(COLUMN_ICON, passItem.icon)
             put(COLUMN_PASSWORD, passItem.password)
-            put(COLUMN_LINK, passItem.link)
+            put(COLUMN_NOTES, passItem.notes)
+            put(COLUMN_DATE, passItem.date)
         }
         val where = "$COLUMN_ID = ?"
         val whereArgs = arrayOf(passItem.id.toString())

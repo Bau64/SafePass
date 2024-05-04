@@ -1,5 +1,6 @@
 package pfc.safepass.app
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipDescription
 import android.content.ClipboardManager
@@ -54,15 +55,17 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
         else
             holder.icon.setImageResource(R.drawable.icon_default_password)
 
-        val pwd = password.password
-        //val link = password.link
-
         // Animacion de items del recyclerview
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.recycler_anim)
 
         holder.copyBtn.setOnClickListener {
-            copyToClipboard(holder.copyBtn.context, pwd)
+            copyToClipboard(holder.copyBtn.context, password.password, true)
+        }
+
+        holder.copyBtn.setOnLongClickListener {
+            password.user?.let { it1 -> copyToClipboard(holder.copyBtn.context, it1, false) }
+            true
         }
 
         // Muestra un dialog preguntando al usuario si quiere editar o borrar la entrada
@@ -81,6 +84,13 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
             val dialog = builder.create()
             dialog.show()
             true
+        }
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val actividad = context as Activity
+            startActivity(context, Intent(context, ItemDetailsActivity::class.java).apply { putExtra("id", id) }, null)
+            actividad.overridePendingTransition(R.anim.zoom_in, R.anim.stay)
         }
     }
 
@@ -139,10 +149,17 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
      * @param context Contexto actual
      * @param texto Contraseña a copiar
      */
-    private fun copyToClipboard(context: Context, texto: String){
-        val clipboardManager = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("pwd", texto)
-        clipboardManager.setPrimaryClip(clipData)
-        Toast.makeText(context, "copiada", Toast.LENGTH_SHORT).show()
+    private fun copyToClipboard(context: Context, texto: String?, isPassword: Boolean){
+        if (texto.isNullOrEmpty())
+            Toast.makeText(context, context.getString(R.string.toast_error_noUser), Toast.LENGTH_SHORT).show()
+        else {
+            val clipboardManager = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("pwd", texto)
+            clipboardManager.setPrimaryClip(clipData)
+            if (isPassword)
+                Toast.makeText(context, context.getString(R.string.toast_copiedPassword), Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(context, context.getString(R.string.toast_copiedUser), Toast.LENGTH_SHORT).show()
+        }
     }
 }

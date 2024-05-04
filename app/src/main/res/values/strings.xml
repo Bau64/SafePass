@@ -5,7 +5,7 @@
     <string name="nickname">Apodo</string>
     <string name="username">Usuario</string>
     <string name="password">Contraseña</string>
-    <string name="link">Link</string>
+    <string name="notes">Notas</string>
     <string name="save">Guardar</string>
     <string name="password_generator">Generador de contraseñas</string>
     <string name="generate_password">Generar contraseña</string>
@@ -32,6 +32,7 @@
     <string name="toolbar_unlockDB">Desbloquear Base de Contraseñas</string>
     <string name="toolbar_addPassword">Añadir contraseña</string>
     <string name="toolbar_generatePassword">Generar contraseña</string>
+    <string name="toolbar_settingsScreen">Configuración</string>
     <string name="cancel">Cancelar</string>
     <string name="ok">OK</string>
     <string name="error_checkboxes">Debes elegir almenos una casilla</string>
@@ -59,5 +60,8 @@
     <string name="settings_title_changeMasterPWD"><font color="#FF0000">Cambiar contraseña maestra</font></string>
     <string name="settings_title_changeMasterPWD_info">Reemplaza la contraseña maestra por una nueva</string>
     <string name="dialog_resetMasterPWD_title">¿Estas seguro?</string>
-    <string name="dialog_resetMasterPWD_message">Estas por cambiar la contraseña maestra ya establecida por otra nueva que estas a punto de crear</string>
+    <string name="dialog_resetMasterPWD_message">Estas por cambiar la contraseña maestra ya establecida por otra nueva que estas a punto de crear. Esto no afectara a las contraseñas guardadas</string>
+    <string name="toast_error_noUser">No existe usuario en esta entrada</string>
+    <string name="toast_copiedUser">Usuario copiado al portapapeles</string>
+    <string name="toast_copiedPassword">Contraseña copiada al portapapeles</string>
 </resources>

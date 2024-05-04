@@ -5,6 +5,7 @@ data class Pass_Item (
     val nickname: String,
     val user: String?,
     val password: String,
-    val link: String?,
-    var icon: ByteArray?
+    val notes: String?,
+    var icon: ByteArray?,
+    val date: String
 )
