@@ -1,8 +1,13 @@
 package pfc.safepass.app
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.LinearLayout
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,12 +29,46 @@ class RecycledItemsActivity : AppCompatActivity() {
         initUI()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_recycler, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuItem_deleteAllPasswords -> {
+                deleteAllPasswords()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     fun initUI() {
         dataBaseHelper = DataBaseHelper(this)
         passwordAdapter = PasswordAdapter(dataBaseHelper.getAllPassword(true), this, true)
         binding.recyclerview2.layoutManager = LinearLayoutManager(this)
         binding.recyclerview2.adapter = passwordAdapter
         recycler_helper()
+    }
+
+    fun deleteAllPasswords(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(getString(R.string.dialog_eraseAllPWDforever_title))
+        builder.setMessage(getString(R.string.dialog_eraseAllPWDforever_message))
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
+            dataBaseHelper.deleteAllPasswords()
+            passwordAdapter.refreshData(dataBaseHelper.getAllPassword(true))
+            recycler_helper()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     fun recycler_helper() {

@@ -64,6 +64,8 @@
     <string name="dialog_resetMasterPWD_message">Estas por cambiar la contraseña maestra ya establecida por otra nueva que estas a punto de crear. Esto no afectara a las contraseñas guardadas</string>
     <string name="dialog_erasePWDforever_title">¿Eliminar de forma permanente?</string>
     <string name="dialog_erasePWDforever_message">Estas a punto de eliminar esta entrada de forma permanente</string>
+    <string name="dialog_eraseAllPWDforever_title">¿Vaciar la papelera de reciclaje?</string>
+    <string name="dialog_eraseAllPWDforever_message">Estas a punto de vaciar la papelera de reciclaje, esto borrara todas las contraseñas permanentemente</string>
     <string name="recycleBin_hint">Aqui se mostraran las contraseñas que hayas borrado. Para borrar una contraseña manten presionada la contraseña y elige la opcion \"borrar\"</string>
     <string name="toast_error_noUser">No existe usuario en esta entrada</string>
     <string name="toast_copiedUser">Usuario copiado al portapapeles</string>
