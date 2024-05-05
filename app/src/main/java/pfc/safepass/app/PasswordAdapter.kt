@@ -26,6 +26,11 @@ import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
     private val dataBaseHelper: DataBaseHelper = DataBaseHelper(context)
@@ -75,13 +80,32 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
         holder.copyBtn.setOnClickListener {
             if (recycledList)
                 delete(id, holder.copyBtn.context)
-            else
+            else {
                 copyToClipboard(holder.copyBtn.context, password.password, true)
+
+                // Cambiar el icono y esperar 1 segundo para volverlo a cambiar
+                holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.check_done_icon))
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(1000)
+                    withContext(Dispatchers.Main) {
+                        holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.item_copy_light))
+                    }
+                }
+            }
         }
 
         holder.copyBtn.setOnLongClickListener {
-            if (!recycledList)
+            if (!recycledList) {
                 password.user?.let { it1 -> copyToClipboard(holder.copyBtn.context, it1, false) }
+
+                holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.check_done_icon))
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(1000)
+                    withContext(Dispatchers.Main) {
+                        holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.item_copy_light))
+                    }
+                }
+            }
             true
         }
 

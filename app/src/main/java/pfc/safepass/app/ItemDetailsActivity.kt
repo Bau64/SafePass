@@ -1,15 +1,20 @@
 package pfc.safepass.app
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import pfc.safepass.app.databinding.ActivityItemDetailsBinding
-import java.io.ByteArrayOutputStream
 
 class ItemDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityItemDetailsBinding
@@ -34,6 +39,31 @@ class ItemDetailsActivity : AppCompatActivity() {
         binding.toolbar2.title = item.nickname
         binding.passwordInput.setText(item.password)
         binding.creationdateInput.setText(item.date)
+
+        binding.detailCopyPassword.setOnClickListener {
+            copyToClipboard(this, item.password, true)
+
+            // Cambiar el icono y esperar 1 segundo para volverlo a cambiar
+            binding.detailCopyPassword.setImageDrawable(getDrawable(R.drawable.check_done_icon))
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(1000)
+                withContext(Dispatchers.Main) {
+                    binding.detailCopyPassword.setImageDrawable(getDrawable(R.drawable.item_copy_light))
+                }
+            }
+        }
+
+        binding.detailCopyUser.setOnClickListener {
+            copyToClipboard(this, item.user, false)
+
+            binding.detailCopyUser.setImageDrawable(getDrawable(R.drawable.check_done_icon))
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(1000)
+                withContext(Dispatchers.Main) {
+                    binding.detailCopyUser.setImageDrawable(getDrawable(R.drawable.item_copy_light))
+                }
+            }
+        }
 
         if (item.icon == null) {
             binding.passwordIcon.setImageResource(R.drawable.icon_default_password)
@@ -63,5 +93,19 @@ class ItemDetailsActivity : AppCompatActivity() {
     private fun byteArrayToBitmap(id: Int): Bitmap {
         val item = dataBaseHelper.getPasswordbyID(id)
         return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
+    }
+
+    private fun copyToClipboard(context: Context, texto: String?, isPassword: Boolean){
+        if (texto.isNullOrEmpty())
+            Toast.makeText(context, context.getString(R.string.toast_error_noUser), Toast.LENGTH_SHORT).show()
+        else {
+            val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("pwd", texto)
+            clipboardManager.setPrimaryClip(clipData)
+            if (isPassword)
+                Toast.makeText(context, context.getString(R.string.toast_copiedPassword), Toast.LENGTH_SHORT).show()
+            else
+                Toast.makeText(context, context.getString(R.string.toast_copiedUser), Toast.LENGTH_SHORT).show()
+        }
     }
 }
