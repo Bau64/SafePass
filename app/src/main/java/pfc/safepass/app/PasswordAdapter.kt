@@ -22,12 +22,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 
-class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
-
+class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
     private val dataBaseHelper: DataBaseHelper = DataBaseHelper(context)
+    private val recycledList = recycledList
 
     class PasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById(R.id.item_service_image)
@@ -55,34 +56,45 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
         else
             holder.icon.setImageResource(R.drawable.icon_default_password)
 
+
         // Animacion de items del recyclerview
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.recycler_anim)
 
+        if (recycledList) {
+            holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.delete_forever_icon))
+        }
+
         holder.copyBtn.setOnClickListener {
-            copyToClipboard(holder.copyBtn.context, password.password, true)
+            if (recycledList)
+                delete(id, holder.copyBtn.context)
+            else
+                copyToClipboard(holder.copyBtn.context, password.password, true)
         }
 
         holder.copyBtn.setOnLongClickListener {
-            password.user?.let { it1 -> copyToClipboard(holder.copyBtn.context, it1, false) }
+            if (!recycledList)
+                password.user?.let { it1 -> copyToClipboard(holder.copyBtn.context, it1, false) }
             true
         }
 
         // Muestra un dialog preguntando al usuario si quiere editar o borrar la entrada
         holder.itemView.setOnLongClickListener {
-            val context = holder.itemView.context
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle(context.getString(R.string.options))
-            val opciones = arrayOf(context.getString(R.string.edit), context.getString(R.string.delete))
+            if (!recycledList) {
+                val context = holder.itemView.context
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle(context.getString(R.string.options))
+                val opciones = arrayOf(context.getString(R.string.edit), context.getString(R.string.delete))
 
-            builder.setItems(opciones) { _, opciones ->
-                when (opciones) {
-                    0 -> {update(context, id)}
-                    1 -> {delete(id); Toast.makeText(context, context.getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()}
+                builder.setItems(opciones) { _, opciones ->
+                    when (opciones) {
+                        0 -> {update(context, id)}
+                        1 -> {delete(id, context); Toast.makeText(context, context.getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()}
+                    }
                 }
+                val dialog = builder.create()
+                dialog.show()
             }
-            val dialog = builder.create()
-            dialog.show()
             true
         }
 
@@ -98,9 +110,29 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
      * Elimina una entrada
      * @param id id de la entrada
      */
-    private fun delete(id: Int){
-        dataBaseHelper.deletePassword(id)
-        refreshData(dataBaseHelper.getAllPassword())
+    private fun delete(id: Int, context: Context){
+        if (recycledList) {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(context.getString(R.string.dialog_erasePWDforever_title))
+            builder.setMessage(context.getString(R.string.dialog_erasePWDforever_message))
+
+            builder.setPositiveButton(context.getString(R.string.ok)) { dialog, _ ->
+                dataBaseHelper.deletePassword(id)
+                refreshData(dataBaseHelper.getAllPassword(true))
+                dialog.dismiss()
+            }
+
+            builder.setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
+        }
+        else {
+            dataBaseHelper.recyclePassword(dataBaseHelper.getPasswordbyID(id)!!)
+            refreshData(dataBaseHelper.getAllPassword(false))
+        }
     }
 
     /**
@@ -127,7 +159,7 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context) :
      */
     fun byteArrayToBitmap(id: Int): Bitmap? {
         val item = dataBaseHelper.getPasswordbyID(id)
-        if (item!!.icon == null)
+        if (item?.icon == null)
             return null
         else
             return BitmapFactory.decodeByteArray(item.icon, 0, item.icon!!.size)

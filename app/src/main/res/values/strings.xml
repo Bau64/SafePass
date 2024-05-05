@@ -26,6 +26,7 @@
     <string name="menuItem_addPassword">Crear nueva contraseña</string>
     <string name="menuItem_lock">Bloquear la base de datos</string>
     <string name="menuItem_settings">Configuración</string>
+    <string name="menuItem_recycleBin">Papelera de reciclaje</string>
     <string name="database_locked">Base de datos cerrada con exito</string>
     <string name="biometric_title">Autenticacion Biometrica</string>
     <string name="biometric_subtitle">Usa tu huella para desbloquear la base de datos</string>
@@ -61,6 +62,9 @@
     <string name="settings_title_changeMasterPWD_info">Reemplaza la contraseña maestra por una nueva</string>
     <string name="dialog_resetMasterPWD_title">¿Estas seguro?</string>
     <string name="dialog_resetMasterPWD_message">Estas por cambiar la contraseña maestra ya establecida por otra nueva que estas a punto de crear. Esto no afectara a las contraseñas guardadas</string>
+    <string name="dialog_erasePWDforever_title">¿Eliminar de forma permanente?</string>
+    <string name="dialog_erasePWDforever_message">Estas a punto de eliminar esta entrada de forma permanente</string>
+    <string name="recycleBin_hint">Aqui se mostraran las contraseñas que hayas borrado. Para borrar una contraseña manten presionada la contraseña y elige la opcion \"borrar\"</string>
     <string name="toast_error_noUser">No existe usuario en esta entrada</string>
     <string name="toast_copiedUser">Usuario copiado al portapapeles</string>
     <string name="toast_copiedPassword">Contraseña copiada al portapapeles</string>

@@ -43,7 +43,7 @@ class MainMenuActivity : AppCompatActivity() {
                     if (newText!!.isNotEmpty())
                         passwordAdapter.filterByName(newText)
                     else
-                        passwordAdapter.refreshData(dataBaseHelper.getAllPassword())
+                        passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
                     return true
                 }
 
@@ -69,6 +69,10 @@ class MainMenuActivity : AppCompatActivity() {
               goToSettings()
               return true
           }
+          R.id.menuItem_bin -> {
+              gotoRecycleBin()
+              return true
+          }
 
           else -> super.onOptionsItemSelected(item)
         }
@@ -89,9 +93,14 @@ class MainMenuActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.slide_left, R.anim.stay)
     }
 
+    private fun gotoRecycleBin(){
+        startActivity(Intent(this, RecycledItemsActivity::class.java))
+        //overridePendingTransition(R.anim.slide_left, R.anim.stay)
+    }
+
     private fun initUI(){
         dataBaseHelper = DataBaseHelper(this)
-        passwordAdapter = PasswordAdapter(dataBaseHelper.getAllPassword(), this)
+        passwordAdapter = PasswordAdapter(dataBaseHelper.getAllPassword(false), this, false)
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = passwordAdapter
         firstPWD_helper()
@@ -114,14 +123,14 @@ class MainMenuActivity : AppCompatActivity() {
         super.onResume()
         firstPWD_helper()
         //if (dataBaseHelper.getPasswordCount() != passwordAdapter.itemCount)
-        passwordAdapter.refreshData(dataBaseHelper.getAllPassword())
+        passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
     }
 
     /**
      * Activa o desactiva el mensaje que indica como crear una contraseña en caso de que no haya ninguna contraseña creada
      */
     private fun firstPWD_helper() {
-        if (dataBaseHelper.getPasswordCount() == 0)
+        if (passwordAdapter.itemCount == 0)
             binding.menuNoPasswordHint.isVisible = true
         else
             binding.menuNoPasswordHint.isGone = true

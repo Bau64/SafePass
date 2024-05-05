@@ -7,27 +7,34 @@
         android:icon="@drawable/menu_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.widget.SearchView"
-        android:iconTint="@color/white"
+        android:iconTint="@android:color/white"
         android:title="@string/menuItem_search" />
 
     <item
         android:id="@+id/menuItem_addNew"
         android:icon="@drawable/texfield_add"
         app:showAsAction="ifRoom"
-        android:iconTint="@color/white"
+        android:iconTint="@android:color/white"
         android:title="@string/menuItem_addPassword" />
 
     <item
         android:id="@+id/menuItem_lock"
         android:icon="@drawable/textfield_lock"
-        app:showAsAction="ifRoom"
-        android:iconTint="@color/white"
+        app:showAsAction="never"
+        android:iconTint="@android:color/white"
         android:title="@string/menuItem_lock" />
+
+    <item
+        android:id="@+id/menuItem_bin"
+        app:showAsAction="never"
+        android:icon="@drawable/menu_bin"
+        android:iconTint="@android:color/white"
+        android:title="@string/menuItem_recycleBin" />
 
     <item
         android:id="@+id/menuItem_settings"
         android:icon="@drawable/icon_settings"
-        app:showAsAction="ifRoom"
-        android:iconTint="@color/white"
+        app:showAsAction="never"
+        android:iconTint="@android:color/white"
         android:title="@string/menuItem_settings" />
 </menu>

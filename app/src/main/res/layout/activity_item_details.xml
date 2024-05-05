@@ -16,7 +16,7 @@
         android:theme="?attr/actionBarTheme"
         app:navigationIcon="@drawable/navigation_arrow_back"
         app:title="nickname"
-        app:titleTextColor="@color/white"
+        app:titleTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
