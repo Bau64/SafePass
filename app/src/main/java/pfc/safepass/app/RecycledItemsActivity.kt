@@ -26,6 +26,7 @@ class RecycledItemsActivity : AppCompatActivity() {
         binding = ActivityRecycledItemsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar3)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         initUI()
     }
 
@@ -60,6 +61,7 @@ class RecycledItemsActivity : AppCompatActivity() {
             dataBaseHelper.deleteAllPasswords()
             passwordAdapter.refreshData(dataBaseHelper.getAllPassword(true))
             recycler_helper()
+            Toast.makeText(this, getString(R.string.toast_emptyBin), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
@@ -76,5 +78,16 @@ class RecycledItemsActivity : AppCompatActivity() {
             binding.recycledHint.isVisible = true
         else
             binding.recycledHint.isGone = true
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_left, R.anim.slide_left_3)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        overridePendingTransition(R.anim.slide_left, R.anim.slide_left_3)
+        super.onBackPressed()
+        return true
     }
 }

@@ -70,4 +70,5 @@
     <string name="toast_error_noUser">No existe usuario en esta entrada</string>
     <string name="toast_copiedUser">Usuario copiado al portapapeles</string>
     <string name="toast_copiedPassword">Contraseña copiada al portapapeles</string>
+    <string name="toast_emptyBin">Papelera de reciclaje vaciada</string>
 </resources>

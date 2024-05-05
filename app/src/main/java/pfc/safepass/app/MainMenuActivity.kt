@@ -95,7 +95,7 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun gotoRecycleBin(){
         startActivity(Intent(this, RecycledItemsActivity::class.java))
-        //overridePendingTransition(R.anim.slide_left, R.anim.stay)
+        overridePendingTransition(R.anim.slide_right_2, R.anim.slide_right)
     }
 
     private fun initUI(){
@@ -121,9 +121,9 @@ class MainMenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        firstPWD_helper()
         //if (dataBaseHelper.getPasswordCount() != passwordAdapter.itemCount)
         passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
+        firstPWD_helper()
     }
 
     /**

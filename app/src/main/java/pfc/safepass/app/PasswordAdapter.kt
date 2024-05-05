@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.ContextCompat.startActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 
 class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
@@ -35,6 +36,7 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
         val nickname: TextView = itemView.findViewById(R.id.lbl_item_service_name)
         val username: TextView = itemView.findViewById(R.id.lbl_item_service_user)
         val copyBtn: ImageButton = itemView.findViewById(R.id.copy_btn)
+        val restoreBtn: ImageButton = itemView.findViewById(R.id.restore_btn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PasswordViewHolder {
@@ -63,6 +65,11 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
 
         if (recycledList) {
             holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.delete_forever_icon))
+            holder.restoreBtn.isVisible = true
+        }
+
+        holder.restoreBtn.setOnClickListener {
+            restorePassword(id, holder.restoreBtn.context)
         }
 
         holder.copyBtn.setOnClickListener {
@@ -130,7 +137,7 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
             dialog.show()
         }
         else {
-            dataBaseHelper.recyclePassword(dataBaseHelper.getPasswordbyID(id)!!)
+            dataBaseHelper.recyclePassword(id)
             refreshData(dataBaseHelper.getAllPassword(false))
         }
     }
@@ -141,7 +148,9 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
      * @param id id de la entrada
      */
     private fun update(context: Context, id: Int){
+        val activity = context as Activity
         startActivity(context, Intent(context, New_Password_Activity::class.java).apply { putExtra("id", id) }, null)
+        activity.overridePendingTransition(R.anim.slide_bottom_2, R.anim.slide_top_2)
     }
 
     /**
@@ -151,6 +160,12 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
     fun refreshData(newPassList: List<Pass_Item>) {
         passList = newPassList
         notifyDataSetChanged()
+    }
+
+    fun restorePassword(id: Int, context: Context) {
+        dataBaseHelper.restorePassword(id)
+        Toast.makeText(context, "Contraseña restaurada", Toast.LENGTH_SHORT).show()
+        refreshData(dataBaseHelper.getAllPassword(true))
     }
 
     /**

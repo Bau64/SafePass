@@ -145,13 +145,32 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
     }
 
-    fun recyclePassword(passItem: Pass_Item) {
+    /**
+     * Mover contraseña a la papelera de reciclaje
+     * @param id id de la contraseña
+     */
+    fun recyclePassword(id: Int) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_RECYCLED, true)
         }
         val where = "$COLUMN_ID = ?"
-        val whereArgs = arrayOf(passItem.id.toString())
+        val whereArgs = arrayOf(id.toString())
+        db.update(TABLE_NAME, values, where, whereArgs)
+        db.close()
+    }
+
+    /**
+     * Restaura una contraseña de la papelera de reciclaje
+     * @param id id de la contraseña
+     */
+    fun restorePassword(id: Int) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put(COLUMN_RECYCLED, false)
+        }
+        val where = "$COLUMN_ID = ?"
+        val whereArgs = arrayOf(id.toString())
         db.update(TABLE_NAME, values, where, whereArgs)
         db.close()
     }
@@ -168,6 +187,9 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
     }
 
+    /**
+     * Vaciar la papelera de reciclaje
+     */
     fun deleteAllPasswords() {
         val db = writableDatabase
         val where = "$COLUMN_RECYCLED = TRUE"
