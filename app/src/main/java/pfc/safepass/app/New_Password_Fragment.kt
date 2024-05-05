@@ -3,6 +3,7 @@ package pfc.safepass.app
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,13 +19,14 @@ import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import pfc.safepass.app.databinding.FragmentNewPasswordBinding
 import java.io.ByteArrayOutputStream
-import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class New_Password_Fragment : Fragment() {
     private lateinit var binding: FragmentNewPasswordBinding
     private lateinit var dataBaseHelper: DataBaseHelper
+    private var isCustomImageSet = false
+    private lateinit var customImageUri: Uri // Imagen seleccionada guardada temporalmente en formato URI por si cambia el fragment
     private var update_id: Int = -1 // ID de la entrada a actualizar
     private var update_item: Pass_Item? = null // Entrada a actualizar
     private var update_mode = false // false = nueva contraseña ; true = actualizar contraseña
@@ -33,6 +35,8 @@ class New_Password_Fragment : Fragment() {
         if (result.isSuccessful) {
             val uriContent = result.uriContent
             binding.newPasswordImageView.setImageURI(uriContent) // Se aplica la imagen al imageview
+            isCustomImageSet = true
+            customImageUri = uriContent!!
         }
     }
 
@@ -73,7 +77,10 @@ class New_Password_Fragment : Fragment() {
     }
 
     private fun initUI(){
-        binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
+        if (!isCustomImageSet)
+            binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
+        else
+            binding.newPasswordImageView.setImageURI(customImageUri)
 
         binding.newPasswordImageButton.setOnClickListener {
             startCrop()
@@ -200,10 +207,7 @@ class New_Password_Fragment : Fragment() {
 
     fun getCurrentDate(): String {
         val currentDate = LocalDate.now()
-
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formatedDate = currentDate.format(formatter)
-
-        return formatedDate
+        return currentDate.format(formatter)
     }
 }
