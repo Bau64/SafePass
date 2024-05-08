@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isGone
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,11 +45,12 @@ class ItemDetailsActivity : AppCompatActivity() {
             copyToClipboard(this, item.password, true)
 
             // Cambiar el icono y esperar 1 segundo para volverlo a cambiar
-            binding.detailCopyPassword.setImageDrawable(getDrawable(R.drawable.check_done_icon))
+            binding.detailCopyPassword.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.check_done_icon))
+            //binding.detailCopyPassword.setImageDrawable(getDrawable(R.drawable.check_done_icon))
             CoroutineScope(Dispatchers.IO).launch {
                 delay(1000)
                 withContext(Dispatchers.Main) {
-                    binding.detailCopyPassword.setImageDrawable(getDrawable(R.drawable.item_copy_light))
+                    binding.detailCopyPassword.setImageDrawable(AppCompatResources.getDrawable(this@ItemDetailsActivity, R.drawable.item_copy_light))
                 }
             }
         }
@@ -56,11 +58,11 @@ class ItemDetailsActivity : AppCompatActivity() {
         binding.detailCopyUser.setOnClickListener {
             copyToClipboard(this, item.user, false)
 
-            binding.detailCopyUser.setImageDrawable(getDrawable(R.drawable.check_done_icon))
+            binding.detailCopyUser.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.check_done_icon))
             CoroutineScope(Dispatchers.IO).launch {
                 delay(1000)
                 withContext(Dispatchers.Main) {
-                    binding.detailCopyUser.setImageDrawable(getDrawable(R.drawable.item_copy_light))
+                    binding.detailCopyUser.setImageDrawable(AppCompatResources.getDrawable(this@ItemDetailsActivity, R.drawable.item_copy_light))
                 }
             }
         }
