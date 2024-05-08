@@ -5,9 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-//import pfc.safepass.app.SafePassApp.Companion.prefs
+//import pfc.safepass.app.preferences.SafePassApp.Companion.prefs
 //import pfc.bautistaczupil.safepass.databinding.ActivityMainBinding
 import pfc.safepass.app.databinding.ActivityMainBinding
+import pfc.safepass.app.preferences.Preferences
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initUI() {
         val prefs = Preferences(applicationContext)
-        // Si hay una clave maestra creada previamente se ira directo a la pantalla de login
+        // If there is an existing master password, the login screen will be shown
         if (prefs.getMasterPWD().isNotEmpty()){
             if (prefs.getLoggedStatus() && prefs.isSessionActive() && prefs.getTimeoutState()) {
                 goToMainMenu()
@@ -48,7 +49,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Verifica que las contraseñas coincidan
+     * Verifies that passwords match
      */
     private fun matchPasswords(){
         val newPassword = binding.newPassword.text.toString()

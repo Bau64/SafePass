@@ -15,11 +15,11 @@
     <string name="symbols">Simbolos</string>
     <string name="numbers">Números</string>
     <string name="login_button">Acceder</string>
-    <string name="new_password_greet">Crea una <u><b>contraseña maestra</b></u> que sera usada para acceder a tu <font color="#0000FF">base de contraseñas</font></string>
-    <string name="new_password_notforget">Es muy importante que apuntes esta contraseña en algun lugar seguro</string>
+    <string name="new_password_greet">Crea una <u><b>contraseña maestra</b></u> que será usada para acceder a tu <font color="#0000FF">base de contraseñas</font></string>
+    <string name="new_password_notforget">Es muy importante que apuntes esta contraseña en algún lugar seguro</string>
     <string name="new_password_confirm">Confirmar contraseña</string>
     <string name="biometric_access"><u>Acceder con biometria</u></string>
-    <string name="masterPWD_created">Contraseña maestra creada con exito</string>
+    <string name="masterPWD_created">Contraseña maestra creada con éxito</string>
     <string name="matching_passwords_error">Las contraseñas no coinciden</string>
     <string name="masterPWD_error">La contraseña es incorrecta</string>
     <string name="login_text">Introduce la clave maestra para desbloquear la base de datos</string>
@@ -27,7 +27,7 @@
     <string name="menuItem_lock">Bloquear la base de datos</string>
     <string name="menuItem_settings">Configuración</string>
     <string name="menuItem_recycleBin">Papelera de reciclaje</string>
-    <string name="database_locked">Base de datos cerrada con exito</string>
+    <string name="database_locked">Base de datos cerrada con éxito</string>
     <string name="biometric_title">Autenticacion Biometrica</string>
     <string name="biometric_subtitle">Usa tu huella para desbloquear la base de datos</string>
     <string name="toolbar_unlockDB">Desbloquear Base de Contraseñas</string>
@@ -66,10 +66,11 @@
     <string name="dialog_erasePWDforever_message">Estas a punto de eliminar esta entrada de forma permanente</string>
     <string name="dialog_eraseAllPWDforever_title">¿Vaciar la papelera de reciclaje?</string>
     <string name="dialog_eraseAllPWDforever_message">Estas a punto de vaciar la papelera de reciclaje, esto borrara todas las contraseñas permanentemente</string>
-    <string name="recycleBin_hint">Aqui se mostraran las contraseñas que hayas borrado. Para borrar una contraseña manten presionada la contraseña y elige la opcion \"borrar\"</string>
+    <string name="recycleBin_hint">Aquí se mostraran las contraseñas que hayas borrado. Para borrar una contraseña manten presionada la contraseña y elige la opcion \"borrar\"</string>
     <string name="toast_error_noUser">No existe usuario en esta entrada</string>
     <string name="toast_copiedUser">Usuario copiado al portapapeles</string>
     <string name="toast_copiedPassword">Contraseña copiada al portapapeles</string>
     <string name="toast_emptyBin">Papelera de reciclaje vaciada</string>
     <string name="last_modified_date">Ultima fecha de modificación</string>
+    <string name="toast_restored_password">Contraseña restaurada</string>
 </resources>

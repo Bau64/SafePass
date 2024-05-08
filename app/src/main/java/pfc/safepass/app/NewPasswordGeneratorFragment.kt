@@ -12,27 +12,27 @@ import androidx.fragment.app.Fragment
 import pfc.safepass.app.databinding.FragmentNewPasswordGeneratorBinding
 import kotlin.random.Random
 
-class New_Password_Generator_Fragment : Fragment() {
+class NewPasswordGeneratorFragment : Fragment() {
     private lateinit var binding: FragmentNewPasswordGeneratorBinding
 
-    var errorSize = false
+    private var errorSize = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentNewPasswordGeneratorBinding.inflate(inflater, container, false)
         initUI()
         return binding.root
     }
 
-    fun initUI(){
+    private fun initUI(){
         binding.toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
         binding.newPasswordSize.doOnTextChanged {text, _, _, _ ->
-            // Se verifica que el texto del tamaño no este vacio y este entre 4 y 64
+            // Checks if password text is not empty and is between 4 and 64 characters long
             if (text.isNullOrEmpty()) {
                 binding.newPasswordPasswordLayout.error = " "
                 binding.newPasswordErrorSize.text = getString(R.string.error_size_empty)
@@ -54,7 +54,7 @@ class New_Password_Generator_Fragment : Fragment() {
         }
 
         binding.generatedPasswordField.doOnTextChanged { text, _, _, _ ->
-            binding.buttonSaveGenerated.isEnabled = !text.isNullOrEmpty() // Si hay texto en el campo de generar contraseña, se habilita el boton de guardar
+            binding.buttonSaveGenerated.isEnabled = !text.isNullOrEmpty() // If text is present in the field, the save button becomes enabled
         }
 
         binding.buttonGenerate.setOnClickListener {
@@ -65,7 +65,7 @@ class New_Password_Generator_Fragment : Fragment() {
             saveGeneratedPassword()
         }
 
-        // Sumar +1 al tamaño
+        // Add +1 to size
         binding.imageButtonAdd.setOnClickListener {
             val sizeText = binding.newPasswordSize.text.toString()
             if (sizeText.isNotEmpty()){
@@ -74,7 +74,7 @@ class New_Password_Generator_Fragment : Fragment() {
             }
         }
 
-        // Restar -1 al tamaño
+        // Subtract -1 to size
         binding.imageButtonSubtract.setOnClickListener {
             val sizeText = binding.newPasswordSize.text.toString()
             if (sizeText.isNotEmpty()){
@@ -101,20 +101,16 @@ class New_Password_Generator_Fragment : Fragment() {
     }
 
     /**
-     * Activa o desactiva el boton de generar en caso de encontrarse un error presente
+     * Enables or disables the generate button if there's an error present
      */
-    fun saveButtonChangeState(){
-        if (errorSize || checkBoxes())
-            binding.buttonGenerate.isEnabled = false
-        else
-            binding.buttonGenerate.isEnabled = true
-
+    private fun saveButtonChangeState(){
+        binding.buttonGenerate.isEnabled = !(errorSize || checkBoxes())
     }
 
     /**
-     * Guardar contraseña generada y enviarsela al fragment anterior en forma de bundle
+     * Save generated password and send it to previous fragment in bundle form
      */
-    fun saveGeneratedPassword(){
+    private fun saveGeneratedPassword(){
         val generatedPassword = binding.generatedPasswordField.text.toString()
         val bundle = Bundle()
         bundle.putString("generatedPassword", generatedPassword)
@@ -123,28 +119,28 @@ class New_Password_Generator_Fragment : Fragment() {
     }
 
     /**
-     * Generar contraseña aleatoria
+     * Generates a random password
      */
-    fun generatePassword(){
+    private fun generatePassword(){
         val passwordSize = binding.newPasswordSize.text.toString().toInt() // Tamaño elegido
-        var checkBoxOptions = mutableListOf<Char>() // Lista donde estaran los caracteres a usar para crear la contraseña
+        val checkBoxOptions = mutableListOf<Char>() // Lista donde estaran los caracteres a usar para crear la contraseña
 
-        if (binding.checkBox.isChecked) // Minusculas
+        if (binding.checkBox.isChecked) // Lowercase
             checkBoxOptions.addAll('a'..'z')
 
-        if (binding.checkBox2.isChecked) // Mayusculas
+        if (binding.checkBox2.isChecked) // Uppercase
             checkBoxOptions.addAll('A'..'Z')
 
-        if (binding.checkBox3.isChecked) // Simbolos
+        if (binding.checkBox3.isChecked) // Symbols
             checkBoxOptions.addAll("¡!$%&/(){}[]=¿?*,.;:-_^#~".toList())
 
-        if (binding.checkBox4.isChecked) // Números
+        if (binding.checkBox4.isChecked) // Numbers
             checkBoxOptions.addAll('0'..'9')
 
         val generatedPassword = buildString {
-            repeat(passwordSize) { // Repite la accion de añadir un caracter aleatorio el numero de veces segun el tamaño
-                val random = Random.nextInt(0, checkBoxOptions.size) // Elige un caracter aleatorio de la mutableList
-                append(checkBoxOptions[random]) // Añade el caracter a la string "generatedPassword"
+            repeat(passwordSize) { // Repeats the action of adding a random character the number of times according to size
+                val random = Random.nextInt(0, checkBoxOptions.size) // Chooses a random character from the mutableList
+                append(checkBoxOptions[random]) // "generatedPassword" Adds the character to the "generatedPassword" String
             }
         }
 
@@ -153,9 +149,9 @@ class New_Password_Generator_Fragment : Fragment() {
 
     /**
      * Verifica si hay almenos una checkbox activa, en el caso contrario devuelve false
-     * @return Boolean
+     * Checks if there's at least one checked checkbox, otherwise it returns false
      */
-    fun checkBoxes():Boolean{
+    private fun checkBoxes():Boolean{
         var error = false
         if (!binding.checkBox.isChecked && !binding.checkBox2.isChecked && !binding.checkBox3.isChecked && !binding.checkBox4.isChecked){
             error = true

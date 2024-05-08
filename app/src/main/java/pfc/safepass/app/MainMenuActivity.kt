@@ -13,6 +13,8 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import pfc.safepass.app.databinding.MainMenuBinding
+import pfc.safepass.app.preferences.Preferences
+import pfc.safepass.app.recycler.PasswordAdapter
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
@@ -84,7 +86,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun goToAddPassword(){
-        startActivity(Intent(this, New_Password_Activity::class.java))
+        startActivity(Intent(this, NewPasswordActivity::class.java))
         overridePendingTransition(R.anim.slide_bottom_2, R.anim.slide_top_2)
     }
 
@@ -103,7 +105,7 @@ class MainMenuActivity : AppCompatActivity() {
         passwordAdapter = PasswordAdapter(dataBaseHelper.getAllPassword(false), this, false)
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = passwordAdapter
-        firstPWD_helper()
+        firstpwdHelper()
     }
 
     // Cuando el usuario presione atras se le pedira que lo vuelva a hacer para salir de la aplicacion
@@ -115,21 +117,20 @@ class MainMenuActivity : AppCompatActivity() {
 
         doubleBackPressed = true
         Toast.makeText(this, getString(R.string.toast_created_press_exit), Toast.LENGTH_SHORT).show()
-        // Si el usuario presiona ATRAS dentro de 2 segundos, saldra de la aplicación
+        // If the users presses BACK twice in 2 seconds, the user exits the app
         Handler(Looper.getMainLooper()).postDelayed({ doubleBackPressed = false }, 2000)
     }
 
     override fun onResume() {
         super.onResume()
-        //if (dataBaseHelper.getPasswordCount() != passwordAdapter.itemCount)
         passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
-        firstPWD_helper()
+        firstpwdHelper()
     }
 
     /**
-     * Activa o desactiva el mensaje que indica como crear una contraseña en caso de que no haya ninguna contraseña creada
+     * Shows or hides the help message about how to create a password when the list is empty
      */
-    private fun firstPWD_helper() {
+    private fun firstpwdHelper() {
         if (passwordAdapter.itemCount == 0)
             binding.menuNoPasswordHint.isVisible = true
         else

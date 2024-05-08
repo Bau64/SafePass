@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import pfc.safepass.app.databinding.ActivityNewPasswordBinding
 
-class New_Password_Activity : AppCompatActivity() {
+class NewPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNewPasswordBinding
     private lateinit var dataBaseHelper: DataBaseHelper
 
@@ -17,10 +17,10 @@ class New_Password_Activity : AppCompatActivity() {
     }
 
     private fun initUI(){
-        val item_id = intent.getIntExtra("id", -1)
-        if (item_id > -1) {
+        val itemId = intent.getIntExtra("id", -1)
+        if (itemId > -1) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView, New_Password_Fragment.newInstance(item_id))
+                .replace(R.id.fragmentContainerView, NewPasswordFragment.newInstance(itemId))
                 .commit()
         }
     }

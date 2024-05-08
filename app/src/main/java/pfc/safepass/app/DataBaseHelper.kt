@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import pfc.safepass.app.Pass_Item
+import pfc.safepass.app.recycler.Pass_Item
 
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
@@ -32,8 +32,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Agrega una contraseña a la base de contraseñas
-     * @param Pass_Item
+     * Adds a single password to the database
+     * @param Pass_Item Password Object
      */
     fun insertPassword(passItem: Pass_Item) {
         val db = writableDatabase
@@ -51,8 +51,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Devuelve todas las entradas en la base de contraseñas
-     * @return mutableListOf<Pass_Item>
+     * Returns all passwords from the database
+     * @return List of passwords in the database
      */
     fun getAllPassword(recycled: Boolean): List<Pass_Item> {
         val passList = mutableListOf<Pass_Item>()
@@ -83,9 +83,9 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Obtiene una contraseña por su ID en la base de datos
-     * @param id ID de la contraseña
-     * @return PassItem
+     * Returns a password by its ID from the database
+     * @param id Password ID
+     * @return PassItem Password object
      */
     fun getPasswordbyID(id: Int): Pass_Item? {
         var passItem: Pass_Item? = null
@@ -110,24 +110,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Devuelve la cantidad de contraseñas existentes en la base de datos
-     * @return Int
-     */
-    fun getPasswordCount(): Int{
-        val count: Int
-        val db = readableDatabase
-        val cursor = db.rawQuery("SELECT COUNT(*) FROM $TABLE_NAME WHERE $COLUMN_RECYCLED = false", null)
-
-        cursor.moveToFirst()
-        count = cursor.getInt(0)
-        cursor.close()
-        db.close()
-        return count
-    }
-
-    /**
-     * Actualiza una contraseña de la base de datos
-     * @param passItem Contraseña a ctualizar
+     * Updates a single password from the database
+     * @param passItem Password object to update
      */
     fun updatePassword(passItem: Pass_Item) {
         val db = writableDatabase
@@ -146,8 +130,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Mover contraseña a la papelera de reciclaje
-     * @param id id de la contraseña
+     * Moves a single password to the recycle bin
+     * @param id Password ID
      */
     fun recyclePassword(id: Int) {
         val db = writableDatabase
@@ -161,8 +145,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Restaura una contraseña de la papelera de reciclaje
-     * @param id id de la contraseña
+     * Restores a single password from the recycle bin
+     * @param id Password ID
      */
     fun restorePassword(id: Int) {
         val db = writableDatabase
@@ -176,8 +160,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Elimina una contraseña de la base de datos
-     * @param id ID de la contraseña
+     * Deletes a single password from the database
+     * @param id Password ID
      */
     fun deletePassword(id: Int) {
         val db = writableDatabase
@@ -188,7 +172,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
-     * Vaciar la papelera de reciclaje
+     * Empty recycle bin
      */
     fun deleteAllPasswords() {
         val db = writableDatabase

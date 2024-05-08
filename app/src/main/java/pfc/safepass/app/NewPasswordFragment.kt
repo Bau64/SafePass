@@ -18,23 +18,25 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import pfc.safepass.app.databinding.FragmentNewPasswordBinding
+import pfc.safepass.app.recycler.Pass_Item
 import java.io.ByteArrayOutputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class New_Password_Fragment : Fragment() {
+class NewPasswordFragment : Fragment() {
     private lateinit var binding: FragmentNewPasswordBinding
     private lateinit var dataBaseHelper: DataBaseHelper
+    private val utils = Utils()
     private var isCustomImageSet = false
-    private lateinit var customImageUri: Uri // Imagen seleccionada guardada temporalmente en formato URI por si cambia el fragment
-    private var update_id: Int = -1 // ID de la entrada a actualizar
-    private var update_item: Pass_Item? = null // Entrada a actualizar
-    private var update_mode = false // false = nueva contraseña ; true = actualizar contraseña
-    private lateinit var defaultImg_byteArray: ByteArray // ByteArray de la imagen por defecto usada cuando el usuario no elige una imagen
+    private lateinit var customImageUri: Uri // Chosen image saved temporally in URI format in case the fragment changes
+    private var updateId: Int = -1 // Password ID to update
+    private var updateItem: Pass_Item? = null // Password object to update
+    private var updateMode = false // false = new password ; true = update password
+    private lateinit var defaultImgBytearray: ByteArray // Default byteArray used when the user doesn't choose an icon
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
         if (result.isSuccessful) {
             val uriContent = result.uriContent
-            binding.newPasswordImageView.setImageURI(uriContent) // Se aplica la imagen al imageview
+            binding.newPasswordImageView.setImageURI(uriContent) // The image gets applied to the imageview
             isCustomImageSet = true
             customImageUri = uriContent!!
         }
@@ -43,23 +45,23 @@ class New_Password_Fragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            update_id = it.getInt("id", -1)
+            updateId = it.getInt("id", -1)
         }
 
-        // Si el id de la entrada existe, se obtiene la entrada desde la base de datos
-        if (update_id > -1) {
+        // if password ID exists, the password object is obtained from the database
+        if (updateId > -1) {
             dataBaseHelper = DataBaseHelper(requireContext())
-            update_item = dataBaseHelper.getPasswordbyID(update_id)
-            update_mode = true
+            updateItem = dataBaseHelper.getPasswordbyID(updateId)
+            updateMode = true
         }
 
-        defaultImg_byteArray = ImgtoByteArray(ContextCompat.getDrawable(requireContext(), R.drawable.icon_default_password)!!.toBitmap())
+        defaultImgBytearray = utils.imgtoByteArray(ContextCompat.getDrawable(requireContext(), R.drawable.icon_default_password)!!.toBitmap())
     }
 
     companion object {
         @JvmStatic
         fun newInstance(id: Int) =
-            New_Password_Fragment().apply {
+            NewPasswordFragment().apply {
                 arguments = Bundle().apply {
                     putInt("id", id)
                 }
@@ -69,7 +71,7 @@ class New_Password_Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentNewPasswordBinding.inflate(layoutInflater)
         dataBaseHelper = DataBaseHelper(requireContext())
         initUI()
@@ -94,29 +96,30 @@ class New_Password_Fragment : Fragment() {
             savePassword()
         }
 
-        // Si se esta actualizando una entrada, los campos se rellenaran con los datos de la entrada
-        if (update_mode) {
+        // If a password is being updated, the fields will be filled with the password's data
+        if (updateMode) {
             binding.newPasswordSaveBtn.isEnabled = true
             binding.toolbar.title = getString(R.string.toolbar_edit_password)
 
-            binding.newPasswordNickname.setText(update_item!!.nickname)
-            binding.newPasswordPassword.setText(update_item!!.password)
-            binding.newPasswordUsername.setText(update_item!!.user)
-            binding.newPasswordNotes.setText(update_item!!.notes)
+            binding.newPasswordNickname.setText(updateItem!!.nickname)
+            binding.newPasswordPassword.setText(updateItem!!.password)
+            binding.newPasswordUsername.setText(updateItem!!.user)
+            binding.newPasswordNotes.setText(updateItem!!.notes)
 
-            if (update_item!!.icon == null)
+            if (updateItem!!.icon == null)
                 binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
             else
-                binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(update_item!!.id))
+                //binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(updateItem!!.id))
+                binding.newPasswordImageView.setImageBitmap(utils.byteArrayToBitmap(dataBaseHelper.getPasswordbyID(id)!!))
         }
 
-        // Recibir contraseña generada en caso de haberse guardado en el generador
+        // Receive generated password in case the user saved it from the generator
         parentFragmentManager.setFragmentResultListener("dataFromGenerator",this) { _, bundle ->
             val generatedPasswordResult = bundle.getString("generatedPassword")
             binding.newPasswordPassword.setText(generatedPasswordResult)
         }
 
-        // Verifica si los campos obligatorios no estan vacios antes de generar la contraseña
+        // Verifies if the required fields are not empty before generating the password
         binding.newPasswordNickname.doOnTextChanged { text, _, _, _ ->
             if (text.isNullOrEmpty()){
                 binding.newPasswordSaveBtn.isEnabled = false
@@ -143,12 +146,12 @@ class New_Password_Fragment : Fragment() {
     private fun goToPasswordGenerator(){
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_left, R.anim.slide_right, R.anim.slide_left, R.anim.slide_right)
-            .replace(R.id.fragmentContainerView, New_Password_Generator_Fragment())
+            .replace(R.id.fragmentContainerView, NewPasswordGeneratorFragment())
             .addToBackStack(null).commit()
     }
 
     /**
-     * Inicia la actividad de recorte de imagenes
+     * Starts image crop activity
      */
     private fun startCrop() {
         cropImage.launch(
@@ -167,47 +170,30 @@ class New_Password_Fragment : Fragment() {
     }
 
     /**
-     * Guarda la contraseña introducida por el usuario
+     * Saves the password created by the user
      */
     private fun savePassword(){
         val nickname = binding.newPasswordNickname.text.toString()
         val username = binding.newPasswordUsername.text.toString()
         val password = binding.newPasswordPassword.text.toString()
         val notes = binding.newPasswordNotes.text.toString()
-        var icon: ByteArray? = ImgtoByteArray(binding.newPasswordImageView.drawable.toBitmap())
+        var icon: ByteArray? = utils.imgtoByteArray(binding.newPasswordImageView.drawable.toBitmap())
 
-        // Se verifica si la imagen es distinta a la imagen por defecto usando el ByteArray de ambas imagenes
-        if (icon.contentEquals(defaultImg_byteArray)) {
+        // Checks if the image is different to the default image using the ByteArray from both images
+        if (icon.contentEquals(defaultImgBytearray)) {
             icon = null
         }
 
-        if (update_mode) {
-            val passwordItem = Pass_Item(update_item!!.id, nickname, username, password, notes, icon, getCurrentDate())
+        if (updateMode) {
+            val passwordItem = Pass_Item(updateItem!!.id, nickname, username, password, notes, icon, utils.getCurrentDate())
             dataBaseHelper.updatePassword(passwordItem)
             Toast.makeText(context, getString(R.string.toast_edited_password), Toast.LENGTH_SHORT).show()
         } else {
-            val passwordItem = Pass_Item(0, nickname, username, password, notes, icon, getCurrentDate())
+            val passwordItem = Pass_Item(0, nickname, username, password, notes, icon, utils.getCurrentDate())
             dataBaseHelper.insertPassword(passwordItem)
             Toast.makeText(context, getString(R.string.toast_created_password), Toast.LENGTH_SHORT).show()
         }
 
         requireActivity().finish()
-    }
-
-    private fun ImgtoByteArray(img: Bitmap): ByteArray {
-        val stream = ByteArrayOutputStream()
-        img.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        return stream.toByteArray()
-    }
-
-    private fun byteArrayToBitmap(id: Int): Bitmap {
-        val item = dataBaseHelper.getPasswordbyID(id)
-        return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
-    }
-
-    fun getCurrentDate(): String {
-        val currentDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        return currentDate.format(formatter)
     }
 }

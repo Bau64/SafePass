@@ -1,9 +1,10 @@
-package pfc.safepass.app
+package pfc.safepass.app.preferences
 
 import android.app.Application
+import pfc.safepass.app.preferences.Preferences
 
 class SafePassApp : Application() {
-    // Inicializa las preferencias cuando inicia la aplicacion
+    // Initializes preferences when app boots up
 
     companion object{
         lateinit var prefs: Preferences

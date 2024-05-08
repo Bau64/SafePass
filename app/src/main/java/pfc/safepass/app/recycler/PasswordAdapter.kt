@@ -1,17 +1,9 @@
-package pfc.safepass.app
+package pfc.safepass.app.recycler
 
 import android.app.Activity
-import android.content.ClipData
-import android.content.ClipDescription
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 //import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +13,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
@@ -31,10 +22,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import pfc.safepass.app.DataBaseHelper
+import pfc.safepass.app.ItemDetailsActivity
+import pfc.safepass.app.NewPasswordActivity
+import pfc.safepass.app.R
+import pfc.safepass.app.Utils
 
-class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
+class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, private val recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
     private val dataBaseHelper: DataBaseHelper = DataBaseHelper(context)
-    private val recycledList = recycledList
+    private val utils = Utils()
 
     class PasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById(R.id.item_service_image)
@@ -53,42 +49,52 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
 
     override fun onBindViewHolder(holder: PasswordViewHolder, position: Int) {
         val password = passList[position]
+        val context = holder.copyBtn.context
 
         val id = password.id
         holder.nickname.text = password.nickname
         holder.username.text = password.user
 
-        if (byteArrayToBitmap(id) != null)
-            holder.icon.setImageBitmap(byteArrayToBitmap(id))
+        val passwordBitmap = utils.byteArrayToBitmap(dataBaseHelper.getPasswordbyID(id)!!)
+        if (passwordBitmap != null)
+            holder.icon.setImageBitmap(passwordBitmap)
         else
             holder.icon.setImageResource(R.drawable.icon_default_password)
 
 
-        // Animacion de items del recyclerview
+        // Recyclerview animations
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.recycler_anim)
 
         if (recycledList) {
-            holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.delete_forever_icon))
+            holder.copyBtn.setImageDrawable(getDrawable(context,
+                R.drawable.delete_forever_icon
+            ))
             holder.restoreBtn.isVisible = true
         }
 
         holder.restoreBtn.setOnClickListener {
-            restorePassword(id, holder.restoreBtn.context)
+            dataBaseHelper.restorePassword(id)
+            Toast.makeText(context, context.getString(R.string.toast_restored_password), Toast.LENGTH_SHORT).show()
+            refreshData(dataBaseHelper.getAllPassword(true))
         }
 
         holder.copyBtn.setOnClickListener {
             if (recycledList)
-                delete(id, holder.copyBtn.context)
+                delete(id, context)
             else {
-                copyToClipboard(holder.copyBtn.context, password.password, true)
+                utils.copyToClipboard(context, password.password, true)
 
-                // Cambiar el icono y esperar 1 segundo para volverlo a cambiar
-                holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.check_done_icon))
+                // Change icon and wait 1 second to change it back
+                holder.copyBtn.setImageDrawable(getDrawable(context,
+                    R.drawable.check_done_icon
+                ))
                 CoroutineScope(Dispatchers.IO).launch {
                     delay(1000)
                     withContext(Dispatchers.Main) {
-                        holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.item_copy_light))
+                        holder.copyBtn.setImageDrawable(getDrawable(context,
+                            R.drawable.item_copy_light
+                        ))
                     }
                 }
             }
@@ -96,29 +102,32 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
 
         holder.copyBtn.setOnLongClickListener {
             if (!recycledList) {
-                password.user?.let { it1 -> copyToClipboard(holder.copyBtn.context, it1, false) }
+                password.user?.let { it1 -> utils.copyToClipboard(context, it1, false) }
 
-                holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.check_done_icon))
+                holder.copyBtn.setImageDrawable(getDrawable(context,
+                    R.drawable.check_done_icon
+                ))
                 CoroutineScope(Dispatchers.IO).launch {
                     delay(1000)
                     withContext(Dispatchers.Main) {
-                        holder.copyBtn.setImageDrawable(getDrawable(holder.copyBtn.context, R.drawable.item_copy_light))
+                        holder.copyBtn.setImageDrawable(getDrawable(context,
+                            R.drawable.item_copy_light
+                        ))
                     }
                 }
             }
             true
         }
 
-        // Muestra un dialog preguntando al usuario si quiere editar o borrar la entrada
+        // Shows a dialog asking the user if he wants to edit or delete the password
         holder.itemView.setOnLongClickListener {
             if (!recycledList) {
-                val context = holder.itemView.context
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle(context.getString(R.string.options))
-                val opciones = arrayOf(context.getString(R.string.edit), context.getString(R.string.delete))
+                val options = arrayOf(context.getString(R.string.edit), context.getString(R.string.delete))
 
-                builder.setItems(opciones) { _, opciones ->
-                    when (opciones) {
+                builder.setItems(options) { _, selection ->
+                    when (selection) {
                         0 -> {update(context, id)}
                         1 -> {delete(id, context); Toast.makeText(context, context.getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()}
                     }
@@ -130,16 +139,15 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
         }
 
         holder.itemView.setOnClickListener {
-            val context = holder.itemView.context
-            val actividad = context as Activity
+            val activity = context as Activity
             startActivity(context, Intent(context, ItemDetailsActivity::class.java).apply { putExtra("id", id) }, null)
-            actividad.overridePendingTransition(R.anim.zoom_in, R.anim.stay)
+            activity.overridePendingTransition(R.anim.zoom_in, R.anim.stay)
         }
     }
 
     /**
-     * Elimina una entrada
-     * @param id id de la entrada
+     * Moves a password to the recycle bin or deletes it permanently if it's already there
+     * @param id Password ID
      */
     private fun delete(id: Int, context: Context){
         if (recycledList) {
@@ -167,43 +175,29 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
     }
 
     /**
-     * Actualiza una entrada
+     * Starts the password update screen
      * @param context
-     * @param id id de la entrada
+     * @param id Password ID
      */
     private fun update(context: Context, id: Int){
         val activity = context as Activity
-        startActivity(context, Intent(context, New_Password_Activity::class.java).apply { putExtra("id", id) }, null)
+        startActivity(context, Intent(context, NewPasswordActivity::class.java).apply { putExtra("id", id) }, null)
         activity.overridePendingTransition(R.anim.slide_bottom_2, R.anim.slide_top_2)
     }
 
     /**
-     * Refresca la lista
-     * @param newPassList Lista de contraseñas
+     * Refreshes password list
+     * @param newPassList Password list
      */
     fun refreshData(newPassList: List<Pass_Item>) {
         passList = newPassList
         notifyDataSetChanged()
     }
 
-    fun restorePassword(id: Int, context: Context) {
-        dataBaseHelper.restorePassword(id)
-        Toast.makeText(context, "Contraseña restaurada", Toast.LENGTH_SHORT).show()
-        refreshData(dataBaseHelper.getAllPassword(true))
-    }
-
     /**
-     * Convierte byteArray de imagen en base de datos a bitmap para verse en la imagen de la entrada
-     * @return Bitmap
+     * Filters passwords by the input text in the searchView
+     * @param text String to search for password nicknames
      */
-    fun byteArrayToBitmap(id: Int): Bitmap? {
-        val item = dataBaseHelper.getPasswordbyID(id)
-        if (item?.icon == null)
-            return null
-        else
-            return BitmapFactory.decodeByteArray(item.icon, 0, item.icon!!.size)
-    }
-
     fun filterByName(text: String) {
         val filteredList = mutableListOf<Pass_Item>()
 
@@ -213,24 +207,5 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, r
         }
         passList = filteredList
         notifyDataSetChanged()
-    }
-
-    /**
-     * Copia la contraseña del item al portapapeles
-     * @param context Contexto actual
-     * @param texto Contraseña a copiar
-     */
-    private fun copyToClipboard(context: Context, texto: String?, isPassword: Boolean){
-        if (texto.isNullOrEmpty())
-            Toast.makeText(context, context.getString(R.string.toast_error_noUser), Toast.LENGTH_SHORT).show()
-        else {
-            val clipboardManager = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("pwd", texto)
-            clipboardManager.setPrimaryClip(clipData)
-            if (isPassword)
-                Toast.makeText(context, context.getString(R.string.toast_copiedPassword), Toast.LENGTH_SHORT).show()
-            else
-                Toast.makeText(context, context.getString(R.string.toast_copiedUser), Toast.LENGTH_SHORT).show()
-        }
     }
 }

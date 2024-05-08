@@ -1,4 +1,4 @@
-package pfc.safepass.app
+package pfc.safepass.app.recycler
 
 data class Pass_Item (
     val id: Int,

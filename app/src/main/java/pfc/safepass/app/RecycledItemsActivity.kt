@@ -3,18 +3,14 @@ package pfc.safepass.app
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.LinearLayout
-import android.widget.SearchView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import pfc.safepass.app.databinding.ActivityRecycledItemsBinding
+import pfc.safepass.app.recycler.PasswordAdapter
 
 class RecycledItemsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecycledItemsBinding
@@ -45,7 +41,7 @@ class RecycledItemsActivity : AppCompatActivity() {
         }
     }
 
-    fun initUI() {
+    private fun initUI() {
         dataBaseHelper = DataBaseHelper(this)
         passwordAdapter = PasswordAdapter(dataBaseHelper.getAllPassword(true), this, true)
         binding.recyclerview2.layoutManager = LinearLayoutManager(this)
@@ -53,7 +49,7 @@ class RecycledItemsActivity : AppCompatActivity() {
         recycler_helper()
     }
 
-    fun deleteAllPasswords(){
+    private fun deleteAllPasswords(){
         val builder = AlertDialog.Builder(this)
         builder.setTitle(getString(R.string.dialog_eraseAllPWDforever_title))
         builder.setMessage(getString(R.string.dialog_eraseAllPWDforever_message))
@@ -73,7 +69,7 @@ class RecycledItemsActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    fun recycler_helper() {
+    private fun recycler_helper() {
         if (passwordAdapter.itemCount == 0)
             binding.recycledHint.isVisible = true
         else
