@@ -5,12 +5,12 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
 class Preferences(context: Context) {
-    private val PREFS_NAME = "pfc.safepass.mypreferences"
-    private val prefs_masterPWD = "masterPWD"
-    private val prefs_logged_status = "loggedStatus"
-    private val prefs_session_start_time = "sessionStartTime"
-    private val prefs_last_sessionTimeout = "last_timeout"
-    private var prefs_timeout_active = "timeout_active"
+    private val prefsName = "pfc.safepass.mypreferences"
+    private val prefsMasterpwd = "masterPWD"
+    private val prefsLoggedStatus = "loggedStatus"
+    private val prefsSessionStartTime = "sessionStartTime"
+    private val prefsLastSessiontimeout = "last_timeout"
+    private var prefsTimeoutActive = "timeout_active"
 
     // Encrypt preferences
     private val masterKey = MasterKey.Builder(context)
@@ -18,7 +18,7 @@ class Preferences(context: Context) {
 
     private val prefs = EncryptedSharedPreferences.create(
         context,
-        PREFS_NAME,
+        prefsName,
         masterKey,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
@@ -35,18 +35,18 @@ class Preferences(context: Context) {
      * Sets a new time frame for automatic login when the user changes it from the settings screen
      */
     fun setTimeoutState(state: Boolean) {
-        prefs.edit().putBoolean(prefs_timeout_active, state).apply()
+        prefs.edit().putBoolean(prefsTimeoutActive, state).apply()
     }
 
     /**
      * Removes master password from preferences
      */
     fun eraseMasterPWD() {
-        prefs.edit().remove(prefs_masterPWD).apply()
+        prefs.edit().remove(prefsMasterpwd).apply()
     }
 
     // Automatic login time frame (in miliseconds)
-    private var SESSION_TIMEOUT = prefs.getInt(prefs_last_sessionTimeout, 5) * 60 * 1000
+    private var sessionTimeout = prefs.getInt(prefsLastSessiontimeout, 5) * 60 * 1000
 
     /**
      * Establishes automatic login time frame in minutes
@@ -54,14 +54,14 @@ class Preferences(context: Context) {
      */
     fun setSessionTimeout(minutes: Int) {
         prefs.edit().putInt("last_timeout", minutes).apply()
-        SESSION_TIMEOUT = prefs.getInt("last_timeout", 5) * 60 * 1000
+        sessionTimeout = prefs.getInt("last_timeout", 5) * 60 * 1000
     }
 
     /**
      * Checks if the automatic login is activated or not
      */
     fun getTimeoutState(): Boolean {
-        return prefs.getBoolean(prefs_timeout_active, true)
+        return prefs.getBoolean(prefsTimeoutActive, true)
     }
 
     /**
@@ -69,7 +69,7 @@ class Preferences(context: Context) {
      * @param pwd Master password to save
      */
     fun saveMasterPWD(pwd:String){
-        prefs.edit().putString(prefs_masterPWD, pwd).apply()
+        prefs.edit().putString(prefsMasterpwd, pwd).apply()
     }
 
     /**
@@ -77,10 +77,10 @@ class Preferences(context: Context) {
      * @param status Logged status
      */
     fun saveLoggedStatus(status:Boolean){
-        prefs.edit().putBoolean(prefs_logged_status, status).apply()
+        prefs.edit().putBoolean(prefsLoggedStatus, status).apply()
         if (status) {
             // Saves current time
-            prefs.edit().putLong(prefs_session_start_time, System.currentTimeMillis()).apply()
+            prefs.edit().putLong(prefsSessionStartTime, System.currentTimeMillis()).apply()
         }
     }
 
@@ -89,28 +89,28 @@ class Preferences(context: Context) {
      * @return Master password
      */
     fun getMasterPWD():String{
-        return prefs.getString(prefs_masterPWD, "")!!
+        return prefs.getString(prefsMasterpwd, "")!!
     }
 
     fun getLoggedStatus():Boolean{
-        return prefs.getBoolean(prefs_logged_status, false)
+        return prefs.getBoolean(prefsLoggedStatus, false)
     }
 
     /**
      * Checks if the user opened the app in the established automatic login time frame
      */
     fun isSessionActive(): Boolean {
-        val sessionStartTime = prefs.getLong(prefs_session_start_time, 0)
+        val sessionStartTime = prefs.getLong(prefsSessionStartTime, 0)
         val currentTimeMillis = System.currentTimeMillis()
         val elapsedTime = currentTimeMillis - sessionStartTime
-        return elapsedTime < SESSION_TIMEOUT
+        return elapsedTime < sessionTimeout
     }
 
     /**
      * Deactivates automatic login
      */
     fun clearSession() {
-        prefs.edit().remove(prefs_session_start_time).apply()
-        prefs.edit().remove(prefs_logged_status).apply()
+        prefs.edit().remove(prefsSessionStartTime).apply()
+        prefs.edit().remove(prefsLoggedStatus).apply()
     }
 }
