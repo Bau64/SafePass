@@ -48,7 +48,16 @@ class MainMenuActivity : AppCompatActivity() {
                         passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
                     return true
                 }
+            })
+            searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+                override fun onMenuItemActionExpand(item: MenuItem): Boolean {
+                    searchView.isIconified = false
+                    return true
+                }
 
+                override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                    return true
+                }
             })
         }
         return true

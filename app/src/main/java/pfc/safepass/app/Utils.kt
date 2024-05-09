@@ -1,16 +1,24 @@
 package pfc.safepass.app
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.os.Build
+import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.getSystemService
 import pfc.safepass.app.recycler.Pass_Item
 import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 class Utils {
 
@@ -64,5 +72,16 @@ class Utils {
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         return currentDate.format(formatter)
+    }
+
+    /**
+     * Hides keyboard
+     * @param activity Current activity
+     */
+    fun hideKeyboard(activity: Activity) {
+        val inputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        activity.currentFocus?.let {
+            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+        }
     }
 }

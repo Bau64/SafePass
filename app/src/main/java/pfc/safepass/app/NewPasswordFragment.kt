@@ -86,6 +86,7 @@ class NewPasswordFragment : Fragment() {
         }
 
         binding.btnGenerate.setOnClickListener {
+            utils.hideKeyboard(requireActivity())
             goToPasswordGenerator()
         }
 
