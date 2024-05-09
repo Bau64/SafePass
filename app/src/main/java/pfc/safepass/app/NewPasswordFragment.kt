@@ -19,9 +19,6 @@ import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import pfc.safepass.app.databinding.FragmentNewPasswordBinding
 import pfc.safepass.app.recycler.Pass_Item
-import java.io.ByteArrayOutputStream
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class NewPasswordFragment : Fragment() {
     private lateinit var binding: FragmentNewPasswordBinding
@@ -109,8 +106,7 @@ class NewPasswordFragment : Fragment() {
             if (updateItem!!.icon == null)
                 binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
             else
-                //binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(updateItem!!.id))
-                binding.newPasswordImageView.setImageBitmap(utils.byteArrayToBitmap(dataBaseHelper.getPasswordbyID(id)!!))
+                binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(updateItem!!.id))
         }
 
         // Receive generated password in case the user saved it from the generator
@@ -195,5 +191,10 @@ class NewPasswordFragment : Fragment() {
         }
 
         requireActivity().finish()
+    }
+
+    private fun byteArrayToBitmap(id: Int): Bitmap {
+        val item = dataBaseHelper.getPasswordbyID(id)
+        return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
     }
 }
