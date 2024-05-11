@@ -73,4 +73,5 @@
     <string name="toast_emptyBin">Papelera de reciclaje vaciada</string>
     <string name="last_modified_date">Ultima fecha de modificación</string>
     <string name="toast_restored_password">Contraseña restaurada</string>
+    <string name="settings_appTheme">Tema de la aplicacion</string>
 </resources>

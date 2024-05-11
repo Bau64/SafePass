@@ -73,4 +73,5 @@
     <string name="toast_emptyBin">Recycle bin empty</string>
     <string name="last_modified_date">Last modified date</string>
     <string name="toast_restored_password">Password restored</string>
+    <string name="settings_appTheme">App theme</string>
 </resources>

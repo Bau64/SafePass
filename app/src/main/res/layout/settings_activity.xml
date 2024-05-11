@@ -12,7 +12,7 @@
         android:minHeight="?attr/actionBarSize"
         app:title="@string/toolbar_settingsScreen"
         app:titleTextColor="@color/white"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="@style/MyToolbar" />
 
     <FrameLayout
         android:id="@+id/settings"

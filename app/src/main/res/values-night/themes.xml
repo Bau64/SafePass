@@ -1,5 +1,4 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Base application theme. -->
     <style name="Base.Theme.SafePass" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/app_blue</item>
         <item name="android:textColorPrimary">@color/white</item>
@@ -24,9 +23,5 @@
     <style name="PositiveButtonStyle">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:backgroundTint">@android:color/transparent</item>
-    </style>
-
-    <style name="app.checkbox" parent="Widget.Material3.CompoundButton.CheckBox">
-        
     </style>
 </resources>

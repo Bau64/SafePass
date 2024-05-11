@@ -9,13 +9,13 @@
               <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\bauro\.android\avd\Pixel_5_API_21.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="adb-ZY227P5CFM-4Sl0Ta._adb-tls-connect._tcp" />
                 </Key>
               </deviceKey>
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-05-11T13:49:11.056064300Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-05-11T15:23:51.456679700Z" />
         </State>
       </entry>
     </value>

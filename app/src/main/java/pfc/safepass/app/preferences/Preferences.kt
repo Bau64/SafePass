@@ -1,6 +1,7 @@
 package pfc.safepass.app.preferences
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
@@ -11,6 +12,7 @@ class Preferences(context: Context) {
     private val prefsSessionStartTime = "sessionStartTime"
     private val prefsLastSessiontimeout = "last_timeout"
     private var prefsTimeoutActive = "timeout_active"
+    private var prefsAppTheme = "app_theme"
 
     // Encrypt preferences
     private val masterKey = MasterKey.Builder(context)
@@ -112,5 +114,20 @@ class Preferences(context: Context) {
     fun clearSession() {
         prefs.edit().remove(prefsSessionStartTime).apply()
         prefs.edit().remove(prefsLoggedStatus).apply()
+    }
+
+    fun setAppTheme(value: String) {
+        var themeInt = -1
+
+        if (value == "Light")
+            themeInt = AppCompatDelegate.MODE_NIGHT_NO
+        else if (value == "Dark")
+            themeInt = AppCompatDelegate.MODE_NIGHT_YES
+
+        prefs.edit().putInt("app_theme", themeInt).apply()
+    }
+
+    fun getAppTheme(): Int {
+        return prefs.getInt(prefsAppTheme, -1)
     }
 }

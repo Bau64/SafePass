@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -60,7 +61,7 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val automaticLoginMinutes = findPreference<ListPreference>("automaticLogin_time")
-            automaticLoginMinutes?.setOnPreferenceChangeListener { preference, newValue ->
+            automaticLoginMinutes?.setOnPreferenceChangeListener { _, newValue ->
                 val selectedValue = newValue as String
                 prefs.setSessionTimeout(selectedValue.toInt())
                 true
@@ -90,6 +91,15 @@ class SettingsActivity : AppCompatActivity() {
 
                 val dialog = builder.create()
                 dialog.show()
+                true
+            }
+
+            val modoObscuroPreference = findPreference<ListPreference>("appTheme")
+            modoObscuroPreference?.setOnPreferenceChangeListener { _, newValue ->
+                val value = newValue as String
+                prefs.setAppTheme(value)
+                AppCompatDelegate.setDefaultNightMode(prefs.getAppTheme())
+                requireActivity().finish()
                 true
             }
         }

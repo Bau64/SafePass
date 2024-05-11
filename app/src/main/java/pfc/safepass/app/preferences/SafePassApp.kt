@@ -1,6 +1,7 @@
 package pfc.safepass.app.preferences
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import pfc.safepass.app.preferences.Preferences
 
 class SafePassApp : Application() {
@@ -13,5 +14,6 @@ class SafePassApp : Application() {
     override fun onCreate() {
         super.onCreate()
         val prefs = Preferences(applicationContext)
+        AppCompatDelegate.setDefaultNightMode(prefs.getAppTheme())
     }
 }

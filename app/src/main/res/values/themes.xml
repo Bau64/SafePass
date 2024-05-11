@@ -1,5 +1,4 @@
 <resources>
-    <!-- Base application theme. -->
     <style name="Base.Theme.SafePass" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/app_blue</item>
         <item name="colorTertiary">@color/black</item>
@@ -13,6 +12,7 @@
     <style name="Theme.SafePass" parent="Base.Theme.SafePass"/>
 
     <style name="MyToolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:editTextColor">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:colorControlHighlight">@color/white</item>
         <item name="itemIconTint">@color/white</item>

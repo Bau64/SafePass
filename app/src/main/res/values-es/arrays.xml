@@ -24,4 +24,16 @@
         <item name="automatic_minutes_9_value">9</item>
         <item name="automatic_minutes_10_value">10</item>
     </string-array>
+
+    <string-array name="app_theme_options">
+        <item>Claro</item>
+        <item>Obscuro</item>
+        <item>Sistema</item>
+    </string-array>
+
+    <string-array name="app_theme_values">
+        <item name="app_theme_light">Light</item>
+        <item name="app_theme_dark">Dark</item>
+        <item name="app_theme_system">System</item>
+    </string-array>
 </resources>
