@@ -7,7 +7,6 @@
     <string name="password">Password</string>
     <string name="notes">Notes</string>
     <string name="save">Save</string>
-    <string name="password_generator">Password generator</string>
     <string name="generate_password">Generate password</string>
     <string name="size">Size</string>
     <string name="uppercase">Uppercase</string>
@@ -49,7 +48,6 @@
     <string name="toast_deleted_password">Password sent to recycle bin</string>
     <string name="toast_created_password">Password created</string>
     <string name="toast_created_press_exit">Press again to exit</string>
-    <string name="toast_copied_password">Password copied</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="options">Options</string>

@@ -82,7 +82,8 @@
                 android:src="@drawable/item_copy_dark"
                 app:layout_constraintBottom_toBottomOf="@+id/userInputLayout"
                 app:layout_constraintStart_toEndOf="@+id/userInputLayout"
-                app:layout_constraintTop_toTopOf="@+id/userInputLayout" />
+                app:layout_constraintTop_toTopOf="@+id/userInputLayout"
+                android:importantForAccessibility="no" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordInputLayout"
@@ -123,7 +124,8 @@
                 android:src="@drawable/item_copy_dark"
                 app:layout_constraintBottom_toBottomOf="@+id/passwordInputLayout"
                 app:layout_constraintStart_toEndOf="@+id/passwordInputLayout"
-                app:layout_constraintTop_toTopOf="@+id/passwordInputLayout" />
+                app:layout_constraintTop_toTopOf="@+id/passwordInputLayout"
+                android:importantForAccessibility="no" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/notesInputLayout"
