@@ -29,7 +29,7 @@ import pfc.safepass.app.NewPasswordActivity
 import pfc.safepass.app.R
 import pfc.safepass.app.Utils
 
-class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, private val recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
+class PasswordAdapter(private var passList: List<PassItem>, context: Context, private val recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
     private lateinit var viewHolder: ViewHolder
     private val dataBaseHelper: DataBaseHelper = DataBaseHelper(context)
     private val utils = Utils()
@@ -193,7 +193,7 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, p
      * @param newPassList Password list
      */
     @SuppressLint("NotifyDataSetChanged")
-    fun refreshData(newPassList: List<Pass_Item>) {
+    fun refreshData(newPassList: List<PassItem>) {
         passList = newPassList
         notifyDataSetChanged()
     }
@@ -204,7 +204,7 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, p
      */
     @SuppressLint("NotifyDataSetChanged")
     fun filterByName(text: String) {
-        val filteredList = mutableListOf<Pass_Item>()
+        val filteredList = mutableListOf<PassItem>()
 
         for (item in passList) {
             if (item.nickname.contains(text, true))

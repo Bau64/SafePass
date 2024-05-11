@@ -27,7 +27,7 @@
 
     <string-array name="app_theme_options">
         <item>Claro</item>
-        <item>Obscuro</item>
+        <item>Oscuro</item>
         <item>Sistema</item>
     </string-array>
 

@@ -29,13 +29,13 @@ class ItemDetailsActivity : AppCompatActivity() {
         initUI()
     }
 
-    fun initUI() {
+    private fun initUI() {
         binding.toolbar2.setNavigationOnClickListener {
             finish()
         }
 
-        val item_id = intent.getIntExtra("id", -1)
-        val item = dataBaseHelper.getPasswordbyID(item_id)!! // Obtener item
+        val itemId = intent.getIntExtra("id", -1)
+        val item = dataBaseHelper.getPasswordbyID(itemId)!! // Obtener item
 
         binding.toolbar2.title = item.nickname
         binding.passwordInput.setText(item.password)
@@ -46,7 +46,6 @@ class ItemDetailsActivity : AppCompatActivity() {
 
             // Cambiar el icono y esperar 1 segundo para volverlo a cambiar
             binding.detailCopyPassword.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.check_done_icon))
-            //binding.detailCopyPassword.setImageDrawable(getDrawable(R.drawable.check_done_icon))
             CoroutineScope(Dispatchers.IO).launch {
                 delay(1000)
                 withContext(Dispatchers.Main) {
@@ -97,12 +96,12 @@ class ItemDetailsActivity : AppCompatActivity() {
         return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
     }
 
-    private fun copyToClipboard(context: Context, texto: String?, isPassword: Boolean){
-        if (texto.isNullOrEmpty())
+    private fun copyToClipboard(context: Context, text: String?, isPassword: Boolean){
+        if (text.isNullOrEmpty())
             Toast.makeText(context, context.getString(R.string.toast_error_noUser), Toast.LENGTH_SHORT).show()
         else {
             val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("pwd", texto)
+            val clipData = ClipData.newPlainText("pwd", text)
             clipboardManager.setPrimaryClip(clipData)
             if (isPassword)
                 Toast.makeText(context, context.getString(R.string.toast_copiedPassword), Toast.LENGTH_SHORT).show()

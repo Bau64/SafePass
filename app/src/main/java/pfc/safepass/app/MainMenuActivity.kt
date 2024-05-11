@@ -1,13 +1,11 @@
 package pfc.safepass.app
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
-import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +33,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_principal, menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
 
         val searchItem = menu?.findItem(R.id.menuItem_search)
         if (searchItem != null) {

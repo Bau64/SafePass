@@ -54,7 +54,6 @@
     <string name="delete">Delete</string>
     <string name="options">Options</string>
     <string name="toolbar_cropTitle">Crop image</string>
-    <string name="title_activity_settings">SettingsActivity</string>
     <string name="settings_header_general">General</string>
     <string name="settings_title_automaticLogin">Automatic login</string>
     <string name="settings_title_automaticLogin_time">Automatic login time frame</string>

@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import pfc.safepass.app.recycler.Pass_Item
+import pfc.safepass.app.recycler.PassItem
 
 class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
@@ -33,9 +33,9 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
 
     /**
      * Adds a single password to the database
-     * @param Pass_Item Password Object
+     * @param passItem Password Object
      */
-    fun insertPassword(passItem: Pass_Item) {
+    fun insertPassword(passItem: PassItem) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_NICKNAME, passItem.nickname)
@@ -44,7 +44,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             put(COLUMN_PASSWORD, passItem.password)
             put(COLUMN_NOTES, passItem.notes)
             put(COLUMN_DATE, passItem.date)
-            //put(COLUMN_RECYCLED, false)
             put(COLUMN_RECYCLED, 1)
         }
         db.insert(TABLE_NAME, null, values)
@@ -55,14 +54,12 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
      * Returns all passwords from the database
      * @return List of passwords in the database
      */
-    fun getAllPassword(recycled: Boolean): List<Pass_Item> {
-        val passList = mutableListOf<Pass_Item>()
+    fun getAllPassword(recycled: Boolean): List<PassItem> {
+        val passList = mutableListOf<PassItem>()
         val db = readableDatabase
         val query: String = if (recycled)
-            //"SELECT * FROM $TABLE_NAME WHERE $COLUMN_RECYCLED = TRUE"
             "SELECT * FROM $TABLE_NAME WHERE $COLUMN_RECYCLED = 0"
         else
-            //"SELECT * FROM $TABLE_NAME WHERE $COLUMN_RECYCLED = FALSE"
             "SELECT * FROM $TABLE_NAME WHERE $COLUMN_RECYCLED = 1"
 
         val cursor = db.rawQuery(query, null)
@@ -76,7 +73,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES))
             val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
 
-            val passwordItem = Pass_Item(id, nickname, username, password, notes, icon, date)
+            val passwordItem = PassItem(id, nickname, username, password, notes, icon, date)
             passList.add(passwordItem)
         }
 
@@ -90,8 +87,8 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
      * @param id Password ID
      * @return PassItem Password object
      */
-    fun getPasswordbyID(id: Int): Pass_Item? {
-        var passItem: Pass_Item? = null
+    fun getPasswordbyID(id: Int): PassItem? {
+        var passItem: PassItem? = null
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME WHERE $COLUMN_ID = $id", null)
 
@@ -104,7 +101,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
             val notes = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOTES))
             val date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE))
 
-            passItem = Pass_Item(id, nickname, username, password, notes, icon, date)
+            passItem = PassItem(id, nickname, username, password, notes, icon, date)
         }
 
         cursor.close()
@@ -116,7 +113,7 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
      * Updates a single password from the database
      * @param passItem Password object to update
      */
-    fun updatePassword(passItem: Pass_Item) {
+    fun updatePassword(passItem: PassItem) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COLUMN_NICKNAME, passItem.nickname)
@@ -139,7 +136,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     fun recyclePassword(id: Int) {
         val db = writableDatabase
         val values = ContentValues().apply {
-            //put(COLUMN_RECYCLED, true)
             put(COLUMN_RECYCLED, 0)
         }
         val where = "$COLUMN_ID = ?"
@@ -155,7 +151,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     fun restorePassword(id: Int) {
         val db = writableDatabase
         val values = ContentValues().apply {
-            //put(COLUMN_RECYCLED, false)
             put(COLUMN_RECYCLED, 1)
         }
         val where = "$COLUMN_ID = ?"
@@ -181,7 +176,6 @@ class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
      */
     fun deleteAllPasswords() {
         val db = writableDatabase
-        //val where = "$COLUMN_RECYCLED = TRUE"
         val where = "$COLUMN_RECYCLED = 0"
         db.delete(TABLE_NAME, where, null)
         db.close()

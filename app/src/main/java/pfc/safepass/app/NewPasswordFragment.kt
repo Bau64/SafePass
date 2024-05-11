@@ -18,7 +18,7 @@ import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import pfc.safepass.app.databinding.FragmentNewPasswordBinding
-import pfc.safepass.app.recycler.Pass_Item
+import pfc.safepass.app.recycler.PassItem
 
 class NewPasswordFragment : Fragment() {
     private lateinit var binding: FragmentNewPasswordBinding
@@ -27,7 +27,7 @@ class NewPasswordFragment : Fragment() {
     private var isCustomImageSet = false
     private lateinit var customImageUri: Uri // Chosen image saved temporally in URI format in case the fragment changes
     private var updateId: Int = -1 // Password ID to update
-    private var updateItem: Pass_Item? = null // Password object to update
+    private var updateItem: PassItem? = null // Password object to update
     private var updateMode = false // false = new password ; true = update password
     private lateinit var defaultImgBytearray: ByteArray // Default byteArray used when the user doesn't choose an icon
     private val cropImage = registerForActivityResult(CropImageContract()) { result ->
@@ -182,11 +182,11 @@ class NewPasswordFragment : Fragment() {
         }
 
         if (updateMode) {
-            val passwordItem = Pass_Item(updateItem!!.id, nickname, username, password, notes, icon, utils.getCurrentDate())
+            val passwordItem = PassItem(updateItem!!.id, nickname, username, password, notes, icon, utils.getCurrentDate())
             dataBaseHelper.updatePassword(passwordItem)
             Toast.makeText(context, getString(R.string.toast_edited_password), Toast.LENGTH_SHORT).show()
         } else {
-            val passwordItem = Pass_Item(0, nickname, username, password, notes, icon, utils.getCurrentDate())
+            val passwordItem = PassItem(0, nickname, username, password, notes, icon, utils.getCurrentDate())
             dataBaseHelper.insertPassword(passwordItem)
             Toast.makeText(context, getString(R.string.toast_created_password), Toast.LENGTH_SHORT).show()
         }

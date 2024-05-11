@@ -6,20 +6,13 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.os.Build
-import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
-import pfc.safepass.app.recycler.Pass_Item
+import pfc.safepass.app.recycler.PassItem
 import java.io.ByteArrayOutputStream
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
 
 class Utils {
 
@@ -28,7 +21,7 @@ class Utils {
      * @param passItem Password object
      * @return Bitmap or null
      */
-    fun byteArrayToBitmap(passItem: Pass_Item): Bitmap? {
+    fun byteArrayToBitmap(passItem: PassItem): Bitmap? {
         return if (passItem.icon == null)
             null
         else

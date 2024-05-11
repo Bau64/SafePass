@@ -27,7 +27,7 @@ class RecycledItemsActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_recycler, menu)
+        menuInflater.inflate(R.menu.recycler_menu, menu)
         return true
     }
 
@@ -46,7 +46,7 @@ class RecycledItemsActivity : AppCompatActivity() {
         passwordAdapter = PasswordAdapter(dataBaseHelper.getAllPassword(true), this, true)
         binding.recyclerview2.layoutManager = LinearLayoutManager(this)
         binding.recyclerview2.adapter = passwordAdapter
-        recycler_helper()
+        recyclerHelper()
     }
 
     private fun deleteAllPasswords(){
@@ -56,7 +56,7 @@ class RecycledItemsActivity : AppCompatActivity() {
         builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             dataBaseHelper.deleteAllPasswords()
             passwordAdapter.refreshData(dataBaseHelper.getAllPassword(true))
-            recycler_helper()
+            recyclerHelper()
             Toast.makeText(this, getString(R.string.toast_emptyBin), Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
@@ -69,7 +69,7 @@ class RecycledItemsActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun recycler_helper() {
+    private fun recyclerHelper() {
         if (passwordAdapter.itemCount == 0)
             binding.recycledHint.isVisible = true
         else

@@ -12,13 +12,13 @@
     <string name="size">Tamaño</string>
     <string name="uppercase">Mayúsculas</string>
     <string name="lowercase">Minúsculas</string>
-    <string name="symbols">Simbolos</string>
+    <string name="symbols">Símbolos</string>
     <string name="numbers">Números</string>
     <string name="login_button">Acceder</string>
     <string name="new_password_greet">Crea una <u><b>contraseña maestra</b></u> que será usada para acceder a tu <font color="#0000FF">base de contraseñas</font></string>
     <string name="new_password_notforget">Es muy importante que apuntes esta contraseña en algún lugar seguro</string>
     <string name="new_password_confirm">Confirmar contraseña</string>
-    <string name="biometric_access"><u>Acceder con biometria</u></string>
+    <string name="biometric_access"><u>Acceder con biometría</u></string>
     <string name="masterPWD_created">Contraseña maestra creada con éxito</string>
     <string name="matching_passwords_error">Las contraseñas no coinciden</string>
     <string name="masterPWD_error">La contraseña es incorrecta</string>
@@ -28,7 +28,7 @@
     <string name="menuItem_settings">Configuración</string>
     <string name="menuItem_recycleBin">Papelera de reciclaje</string>
     <string name="database_locked">Base de datos cerrada con éxito</string>
-    <string name="biometric_title">Autenticacion Biometrica</string>
+    <string name="biometric_title">Autenticación Biometrica</string>
     <string name="biometric_subtitle">Usa tu huella para desbloquear la base de datos</string>
     <string name="toolbar_unlockDB">Desbloquear Base de Contraseñas</string>
     <string name="toolbar_addPassword">Añadir contraseña</string>
@@ -36,12 +36,12 @@
     <string name="toolbar_settingsScreen">Configuración</string>
     <string name="cancel">Cancelar</string>
     <string name="ok">OK</string>
-    <string name="error_checkboxes">Debes elegir almenos una casilla</string>
+    <string name="error_checkboxes">Debes elegir al menos una casilla</string>
     <string name="error_size">El tamaño de la contraseña debe ser entre 4 y 64</string>
-    <string name="error_size_empty">El tamaño no puede estar vacio</string>
+    <string name="error_size_empty">El tamaño no puede estar vacío</string>
     <string name="hint_generated_password">Contraseña generada</string>
-    <string name="error_empty_nickname">El apodo no puede estar vacio</string>
-    <string name="error_empty_password">La contraseña no puede estar vacia</string>
+    <string name="error_empty_nickname">El apodo no puede estar vacío</string>
+    <string name="error_empty_password">La contraseña no puede estar vacía</string>
     <string name="menuItem_search">Buscar</string>
     <string name="no_passwords_add_hint">Para añadir una contraseña presiona el \"+\" en la parte superior</string>
     <string name="toolbar_edit_password">Editar contraseña</string>
@@ -54,24 +54,23 @@
     <string name="delete">Borrar</string>
     <string name="options">Opciones</string>
     <string name="toolbar_cropTitle">Recortar imagen</string>
-    <string name="title_activity_settings">SettingsActivity</string>
     <string name="settings_header_general">General</string>
-    <string name="settings_title_automaticLogin">Inicio de sesion automatico</string>
-    <string name="settings_title_automaticLogin_time">Tiempo de inicio automatico</string>
+    <string name="settings_title_automaticLogin">Inicio de sesión automático</string>
+    <string name="settings_title_automaticLogin_time">Tiempo de inicio de sesión automático</string>
     <string name="settings_title_changeMasterPWD"><font color="#FF0000">Cambiar contraseña maestra</font></string>
     <string name="settings_title_changeMasterPWD_info">Reemplaza la contraseña maestra por una nueva</string>
-    <string name="dialog_resetMasterPWD_title">¿Estas seguro?</string>
-    <string name="dialog_resetMasterPWD_message">Estas por cambiar la contraseña maestra ya establecida por otra nueva que estas a punto de crear. Esto no afectara a las contraseñas guardadas</string>
+    <string name="dialog_resetMasterPWD_title">¿Estás seguro?</string>
+    <string name="dialog_resetMasterPWD_message">Estás por cambiar la contraseña maestra ya establecida por otra nueva que estas a punto de crear. Esto no afectará a las contraseñas guardadas</string>
     <string name="dialog_erasePWDforever_title">¿Eliminar de forma permanente?</string>
-    <string name="dialog_erasePWDforever_message">Estas a punto de eliminar esta entrada de forma permanente</string>
+    <string name="dialog_erasePWDforever_message">Estás a punto de eliminar esta entrada de forma permanente</string>
     <string name="dialog_eraseAllPWDforever_title">¿Vaciar la papelera de reciclaje?</string>
-    <string name="dialog_eraseAllPWDforever_message">Estas a punto de vaciar la papelera de reciclaje, esto borrara todas las contraseñas permanentemente</string>
-    <string name="recycleBin_hint">Aquí se mostraran las contraseñas que hayas borrado. Para borrar una contraseña manten presionada la contraseña y elige la opcion \"borrar\"</string>
+    <string name="dialog_eraseAllPWDforever_message">Estás a punto de vaciar la papelera de reciclaje, esto borrará todas las contraseñas permanentemente</string>
+    <string name="recycleBin_hint">Aquí se mostrarán las contraseñas que hayas borrado. Para borrar una contraseña mantén presionada la contraseña y elige la opción \"borrar\"</string>
     <string name="toast_error_noUser">No existe usuario en esta entrada</string>
     <string name="toast_copiedUser">Usuario copiado al portapapeles</string>
     <string name="toast_copiedPassword">Contraseña copiada al portapapeles</string>
     <string name="toast_emptyBin">Papelera de reciclaje vaciada</string>
-    <string name="last_modified_date">Ultima fecha de modificación</string>
+    <string name="last_modified_date">Última fecha de modificación</string>
     <string name="toast_restored_password">Contraseña restaurada</string>
-    <string name="settings_appTheme">Tema de la aplicacion</string>
+    <string name="settings_appTheme">Tema de la aplicación</string>
 </resources>

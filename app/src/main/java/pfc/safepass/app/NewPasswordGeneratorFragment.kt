@@ -8,7 +8,6 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-//import pfc.bautistaczupil.safepass.databinding.FragmentNewPasswordGeneratorBinding
 import pfc.safepass.app.databinding.FragmentNewPasswordGeneratorBinding
 import kotlin.random.Random
 

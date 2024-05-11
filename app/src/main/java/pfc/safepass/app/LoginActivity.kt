@@ -1,19 +1,15 @@
 package pfc.safepass.app
 
 import android.content.Intent
-//import android.hardware.biometrics.BiometricManager
-//import android.hardware.biometrics.BiometricPrompt
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
-//import pfc.safepass.app.preferences.SafePassApp.Companion.prefs
 import androidx.biometric.BiometricPrompt.PromptInfo
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import pfc.safepass.app.databinding.LoginScreenBinding
 import pfc.safepass.app.preferences.Preferences
-//import pfc.bautistaczupil.safepass.databinding.LoginScreenBinding
 import java.util.concurrent.Executor
 
 class LoginActivity : AppCompatActivity() {
@@ -29,10 +25,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * Checks if the sistem can access biometrics
+     * Checks if the system can access biometrics
      */
     private fun checkBiometricHW():Boolean{
-        var supportedHW = false
         val biometricManager = BiometricManager.from(this)
         return when (biometricManager.canAuthenticate()) {
             BiometricManager.BIOMETRIC_SUCCESS -> true
@@ -81,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun goToMainMenu(){
+    private fun goToMainMenu(){
         startActivity(Intent(this, MainMenuActivity::class.java))
         overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out)
     }

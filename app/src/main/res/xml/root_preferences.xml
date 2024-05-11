@@ -15,11 +15,6 @@
             app:title="@string/settings_title_automaticLogin_time"
             app:useSimpleSummaryProvider="true" />
 
-        <Preference
-            app:key="change_masterPWD"
-            app:title="@string/settings_title_changeMasterPWD"
-            app:summary="@string/settings_title_changeMasterPWD_info" />
-
         <ListPreference
             app:key="appTheme"
             app:entries="@array/app_theme_options"
@@ -27,6 +22,11 @@
             app:defaultValue="System"
             app:title="@string/settings_appTheme"
             app:useSimpleSummaryProvider="true" />
+
+        <Preference
+            app:key="change_masterPWD"
+            app:title="@string/settings_title_changeMasterPWD"
+            app:summary="@string/settings_title_changeMasterPWD_info" />
 
     </PreferenceCategory>
 

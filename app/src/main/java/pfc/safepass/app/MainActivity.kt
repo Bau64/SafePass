@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-//import pfc.safepass.app.preferences.SafePassApp.Companion.prefs
-//import pfc.bautistaczupil.safepass.databinding.ActivityMainBinding
 import pfc.safepass.app.databinding.ActivityMainBinding
 import pfc.safepass.app.preferences.Preferences
 

@@ -67,6 +67,14 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
+            val appThemePreference = findPreference<ListPreference>("appTheme")
+            appThemePreference?.setOnPreferenceChangeListener { _, newValue ->
+                val value = newValue as String
+                prefs.setAppTheme(value)
+                AppCompatDelegate.setDefaultNightMode(prefs.getAppTheme())
+                true
+            }
+
             val changemasterpwdPreference = findPreference<Preference>("change_masterPWD")
             changemasterpwdPreference?.setOnPreferenceClickListener {
                 val context = requireContext()
@@ -91,14 +99,6 @@ class SettingsActivity : AppCompatActivity() {
 
                 val dialog = builder.create()
                 dialog.show()
-                true
-            }
-
-            val appThemePreference = findPreference<ListPreference>("appTheme")
-            appThemePreference?.setOnPreferenceChangeListener { _, newValue ->
-                val value = newValue as String
-                prefs.setAppTheme(value)
-                AppCompatDelegate.setDefaultNightMode(prefs.getAppTheme())
                 true
             }
         }
