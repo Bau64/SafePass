@@ -1,11 +1,13 @@
 package pfc.safepass.app
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +22,9 @@ class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
     private lateinit var dataBaseHelper: DataBaseHelper
     private lateinit var passwordAdapter: PasswordAdapter
+    private lateinit var searchView: SearchView
     private var doubleBackPressed = false
+    private val utils = Utils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +39,12 @@ class MainMenuActivity : AppCompatActivity() {
 
         val searchItem = menu?.findItem(R.id.menuItem_search)
         if (searchItem != null) {
-            val searchView = searchItem.actionView as SearchView
+            searchView = searchItem.actionView as SearchView
+            searchView.isIconifiedByDefault = false
+
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+                    searchView.clearFocus()
                     return true
                 }
 
@@ -49,13 +56,16 @@ class MainMenuActivity : AppCompatActivity() {
                     return true
                 }
             })
+
             searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(item: MenuItem): Boolean {
-                    searchView.isIconified = false
+                    searchView.requestFocus()
+                    utils.showKeyboard(this@MainMenuActivity)
                     return true
                 }
 
                 override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
+                    utils.hideKeyboard(this@MainMenuActivity)
                     return true
                 }
             })
@@ -132,8 +142,14 @@ class MainMenuActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.toolbar.collapseActionView()
         passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
         firstpwdHelper()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        utils.hideKeyboard(this)
     }
 
     /**

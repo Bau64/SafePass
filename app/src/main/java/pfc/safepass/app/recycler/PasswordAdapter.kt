@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
@@ -139,9 +140,9 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, p
         }
 
         holder.itemView.setOnClickListener {
-            val activity = context as Activity
-            startActivity(context, Intent(context, ItemDetailsActivity::class.java).apply { putExtra("id", id) }, null)
-            activity.overridePendingTransition(R.anim.zoom_in, R.anim.stay)
+            val itemContext = holder.itemView.context as Activity
+            startActivity(itemContext, Intent(itemContext, ItemDetailsActivity::class.java).apply { putExtra("id", id) }, null)
+            itemContext.overridePendingTransition(R.anim.zoom_in, R.anim.stay)
         }
     }
 

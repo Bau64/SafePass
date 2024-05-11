@@ -1,7 +1,6 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.SafePass" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/app_blue</item>
         <item name="colorTertiary">@color/black</item>
     </style>
@@ -11,7 +10,17 @@
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="Theme.SafePass" parent="Base.Theme.SafePass">
+    <style name="Theme.SafePass" parent="Base.Theme.SafePass"/>
 
+    <style name="MyToolbar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:colorControlHighlight">@color/white</item>
+        <item name="itemIconTint">@color/white</item>
+        <item name="iconTint">@color/white</item>
+        <item name="tint">@color/white</item>
+    </style>
+
+    <style name="checkIconLight" parent="Base.Theme.SafePass">
+        <item name="colorControlNormal">@color/white</item>
     </style>
 </resources>

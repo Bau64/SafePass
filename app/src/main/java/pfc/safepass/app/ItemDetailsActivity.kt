@@ -50,7 +50,7 @@ class ItemDetailsActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 delay(1000)
                 withContext(Dispatchers.Main) {
-                    binding.detailCopyPassword.setImageDrawable(AppCompatResources.getDrawable(this@ItemDetailsActivity, R.drawable.item_copy_light))
+                    binding.detailCopyPassword.setImageDrawable(AppCompatResources.getDrawable(this@ItemDetailsActivity, R.drawable.item_copy_dark))
                 }
             }
         }
@@ -62,7 +62,7 @@ class ItemDetailsActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 delay(1000)
                 withContext(Dispatchers.Main) {
-                    binding.detailCopyUser.setImageDrawable(AppCompatResources.getDrawable(this@ItemDetailsActivity, R.drawable.item_copy_light))
+                    binding.detailCopyUser.setImageDrawable(AppCompatResources.getDrawable(this@ItemDetailsActivity, R.drawable.item_copy_dark))
                 }
             }
         }

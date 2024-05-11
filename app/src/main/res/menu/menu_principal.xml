@@ -5,15 +5,16 @@
     <item
         android:id="@+id/menuItem_search"
         android:icon="@drawable/menu_search"
-        app:showAsAction="ifRoom|collapseActionView"
+        app:showAsAction="always|collapseActionView"
         app:actionViewClass="android.widget.SearchView"
+        android:focusable="true"
         android:iconTint="@android:color/white"
         android:title="@string/menuItem_search" />
 
     <item
         android:id="@+id/menuItem_addNew"
         android:icon="@drawable/texfield_add"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:iconTint="@android:color/white"
         android:title="@string/menuItem_addPassword" />
 
