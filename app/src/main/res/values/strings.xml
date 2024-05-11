@@ -46,7 +46,7 @@
     <string name="no_passwords_add_hint">To add a new password press the \"+\" on the top</string>
     <string name="toolbar_edit_password">Edit password</string>
     <string name="toast_edited_password">Password edited</string>
-    <string name="toast_deleted_password">Password deleted</string>
+    <string name="toast_deleted_password">Password sent to recycle bin</string>
     <string name="toast_created_password">Password created</string>
     <string name="toast_created_press_exit">Press again to exit</string>
     <string name="toast_copied_password">Password copied</string>

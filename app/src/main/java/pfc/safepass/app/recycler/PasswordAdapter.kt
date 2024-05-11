@@ -84,7 +84,7 @@ class PasswordAdapter(private var passList: List<PassItem>, context: Context, pr
 
         holder.copyBtn.setOnClickListener {
             if (recycledList)
-                delete(id, context)
+                deletePassword(id, context)
             else {
                 utils.copyToClipboard(context, password.password, true)
 
@@ -132,7 +132,7 @@ class PasswordAdapter(private var passList: List<PassItem>, context: Context, pr
                 builder.setItems(options) { _, selection ->
                     when (selection) {
                         0 -> {update(context, id)}
-                        1 -> {delete(id, context); Toast.makeText(context, context.getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()}
+                        1 -> {deletePassword(id, context); Toast.makeText(context, context.getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()}
                     }
                 }
                 val dialog = builder.create()
@@ -152,7 +152,7 @@ class PasswordAdapter(private var passList: List<PassItem>, context: Context, pr
      * Moves a password to the recycle bin or deletes it permanently if it's already there
      * @param id Password ID
      */
-    private fun delete(id: Int, context: Context){
+    private fun deletePassword(id: Int, context: Context){
         if (recycledList) {
             val builder = AlertDialog.Builder(context)
             builder.setTitle(context.getString(R.string.dialog_erasePWDforever_title))

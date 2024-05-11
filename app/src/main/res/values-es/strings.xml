@@ -46,7 +46,7 @@
     <string name="no_passwords_add_hint">Para añadir una contraseña presiona el \"+\" en la parte superior</string>
     <string name="toolbar_edit_password">Editar contraseña</string>
     <string name="toast_edited_password">Contraseña editada</string>
-    <string name="toast_deleted_password">Contraseña eliminada</string>
+    <string name="toast_deleted_password">Contraseña enviada a la papelera de reciclaje</string>
     <string name="toast_created_password">Contraseña creada</string>
     <string name="toast_created_press_exit">Presiona otra vez para salir</string>
     <string name="toast_copied_password">Contraseña copiada</string>

@@ -3,46 +3,72 @@ package pfc.safepass.app
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pfc.safepass.app.databinding.ActivityItemDetailsBinding
+import pfc.safepass.app.recycler.PassItem
 
 class ItemDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityItemDetailsBinding
     private lateinit var dataBaseHelper: DataBaseHelper
+    private val utils = Utils()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityItemDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar2)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         dataBaseHelper = DataBaseHelper(this)
         initUI()
     }
 
-    private fun initUI() {
-        binding.toolbar2.setNavigationOnClickListener {
-            finish()
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        super.onBackPressed()
+        return true
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.details_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menuItem_edit -> {
+                goToUpdatePassword()
+                return true
+            }
+            R.id.menuItem_detailsBin -> {
+                deletePassword()
+                return true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun initUI() {
         val itemId = intent.getIntExtra("id", -1)
         val item = dataBaseHelper.getPasswordbyID(itemId)!! // Obtener item
-
-        binding.toolbar2.title = item.nickname
-        binding.passwordInput.setText(item.password)
-        binding.creationdateInput.setText(item.date)
+        fillFields(item)
 
         binding.detailCopyPassword.setOnClickListener {
-            copyToClipboard(this, item.password, true)
+            utils.copyToClipboard(this, item.password, true)
 
             // Cambiar el icono y esperar 1 segundo para volverlo a cambiar
             binding.detailCopyPassword.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.check_done_icon))
@@ -55,7 +81,8 @@ class ItemDetailsActivity : AppCompatActivity() {
         }
 
         binding.detailCopyUser.setOnClickListener {
-            copyToClipboard(this, item.user, false)
+            utils.copyToClipboard(this, item.user, false)
+
 
             binding.detailCopyUser.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.check_done_icon))
             CoroutineScope(Dispatchers.IO).launch {
@@ -64,25 +91,6 @@ class ItemDetailsActivity : AppCompatActivity() {
                     binding.detailCopyUser.setImageDrawable(AppCompatResources.getDrawable(this@ItemDetailsActivity, R.drawable.item_copy_dark))
                 }
             }
-        }
-
-        if (item.icon == null) {
-            binding.passwordIcon.setImageResource(R.drawable.icon_default_password)
-        } else {
-            binding.passwordIcon.setImageBitmap(byteArrayToBitmap(item.id))
-        }
-
-        if (!item.user.isNullOrEmpty()) {
-            binding.userInput.setText(item.user)
-        } else {
-            binding.userInputLayout.isGone = true
-            binding.detailCopyUser.isGone = true
-        }
-
-        if (!item.notes.isNullOrEmpty()) {
-            binding.notesInput.setText(item.notes)
-        } else {
-            binding.notesInputLayout.isGone = true
         }
     }
 
@@ -96,17 +104,46 @@ class ItemDetailsActivity : AppCompatActivity() {
         return BitmapFactory.decodeByteArray(item!!.icon, 0, item.icon!!.size)
     }
 
-    private fun copyToClipboard(context: Context, text: String?, isPassword: Boolean){
-        if (text.isNullOrEmpty())
-            Toast.makeText(context, context.getString(R.string.toast_error_noUser), Toast.LENGTH_SHORT).show()
-        else {
-            val clipboardManager = context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clipData = ClipData.newPlainText("pwd", text)
-            clipboardManager.setPrimaryClip(clipData)
-            if (isPassword)
-                Toast.makeText(context, context.getString(R.string.toast_copiedPassword), Toast.LENGTH_SHORT).show()
-            else
-                Toast.makeText(context, context.getString(R.string.toast_copiedUser), Toast.LENGTH_SHORT).show()
+    private fun goToUpdatePassword() {
+        startActivity(Intent(this, NewPasswordActivity::class.java).apply { putExtra("id", intent.getIntExtra("id", -1)) }, null)
+        overridePendingTransition(R.anim.slide_bottom_2, R.anim.slide_top_2)
+    }
+
+    private fun deletePassword() {
+        super.onBackPressed()
+        dataBaseHelper.recyclePassword(intent.getIntExtra("id", -1))
+        Toast.makeText(this, getString(R.string.toast_deleted_password), Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onResume() {
+        fillFields(dataBaseHelper.getPasswordbyID(intent.getIntExtra("id", -1))!!)
+        super.onResume()
+    }
+
+    private fun fillFields(item: PassItem) {
+        binding.toolbar2.title = item.nickname
+        binding.passwordInput.setText(item.password)
+        binding.creationdateInput.setText(item.date)
+
+        if (item.icon == null) {
+            binding.passwordIcon.setImageResource(R.drawable.icon_default_password)
+        } else {
+            binding.passwordIcon.setImageBitmap(byteArrayToBitmap(item.id))
+        }
+
+        if (!item.user.isNullOrEmpty()) {
+            binding.userInputLayout.isVisible = true
+            binding.userInput.setText(item.user)
+        } else {
+            binding.userInputLayout.isGone = true
+            binding.detailCopyUser.isGone = true
+        }
+
+        if (!item.notes.isNullOrEmpty()) {
+            binding.notesInputLayout.isVisible = true
+            binding.notesInput.setText(item.notes)
+        } else {
+            binding.notesInputLayout.isGone = true
         }
     }
 }

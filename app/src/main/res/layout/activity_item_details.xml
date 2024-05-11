@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="@drawable/navigation_arrow_back"
+        android:theme="@style/MyToolbar"
+
         app:title="nickname"
         app:titleTextColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
