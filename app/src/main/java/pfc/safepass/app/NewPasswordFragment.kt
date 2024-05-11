@@ -104,10 +104,14 @@ class NewPasswordFragment : Fragment() {
             binding.newPasswordUsername.setText(updateItem!!.user)
             binding.newPasswordNotes.setText(updateItem!!.notes)
 
-            if (updateItem!!.icon == null)
-                binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
-            else
-                binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(updateItem!!.id))
+            if (!isCustomImageSet) {
+                if (updateItem!!.icon == null)
+                    binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
+                else
+                    binding.newPasswordImageView.setImageBitmap(byteArrayToBitmap(updateItem!!.id))
+            } else {
+                binding.newPasswordImageView.setImageURI(customImageUri)
+            }
         }
 
         // Receive generated password in case the user saved it from the generator
