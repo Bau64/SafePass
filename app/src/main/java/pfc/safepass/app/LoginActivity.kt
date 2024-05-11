@@ -57,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
                 executor,
                 object : BiometricPrompt.AuthenticationCallback() {
                     override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                        prefs.saveLoggedStatus(true)
                         goToMainMenu()
                         finish()
                     }
