@@ -27,6 +27,7 @@ Thumbs.db
 *.ipr
 *.iws
 .idea/assetWizardSettings.xml
+.idea/deploymentTargetDropDown.xml
 
 # Gradle files
 .gradle/
