@@ -94,12 +94,11 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
-            val modoObscuroPreference = findPreference<ListPreference>("appTheme")
-            modoObscuroPreference?.setOnPreferenceChangeListener { _, newValue ->
+            val appThemePreference = findPreference<ListPreference>("appTheme")
+            appThemePreference?.setOnPreferenceChangeListener { _, newValue ->
                 val value = newValue as String
                 prefs.setAppTheme(value)
                 AppCompatDelegate.setDefaultNightMode(prefs.getAppTheme())
-                requireActivity().finish()
                 true
             }
         }

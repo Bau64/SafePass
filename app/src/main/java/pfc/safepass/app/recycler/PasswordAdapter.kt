@@ -1,9 +1,9 @@
 package pfc.safepass.app.recycler
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-//import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +13,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getDrawable
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,10 +30,11 @@ import pfc.safepass.app.R
 import pfc.safepass.app.Utils
 
 class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, private val recycledList: Boolean) : RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>() {
+    private lateinit var viewHolder: ViewHolder
     private val dataBaseHelper: DataBaseHelper = DataBaseHelper(context)
     private val utils = Utils()
 
-    class PasswordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class PasswordViewHolder(itemView: View) : ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById(R.id.item_service_image)
         val nickname: TextView = itemView.findViewById(R.id.lbl_item_service_name)
         val username: TextView = itemView.findViewById(R.id.lbl_item_service_user)
@@ -49,6 +50,7 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, p
     override fun getItemCount(): Int = passList.size
 
     override fun onBindViewHolder(holder: PasswordViewHolder, position: Int) {
+        viewHolder = holder
         val password = passList[position]
         val context = holder.copyBtn.context
 
@@ -181,15 +183,16 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, p
      * @param id Password ID
      */
     private fun update(context: Context, id: Int){
-        val activity = context as Activity
+        val itemContext = viewHolder.itemView.context as Activity
         startActivity(context, Intent(context, NewPasswordActivity::class.java).apply { putExtra("id", id) }, null)
-        activity.overridePendingTransition(R.anim.slide_bottom_2, R.anim.slide_top_2)
+        itemContext.overridePendingTransition(R.anim.slide_bottom_2, R.anim.slide_top_2)
     }
 
     /**
      * Refreshes password list
      * @param newPassList Password list
      */
+    @SuppressLint("NotifyDataSetChanged")
     fun refreshData(newPassList: List<Pass_Item>) {
         passList = newPassList
         notifyDataSetChanged()
@@ -199,6 +202,7 @@ class PasswordAdapter(private var passList: List<Pass_Item>, context: Context, p
      * Filters passwords by the input text in the searchView
      * @param text String to search for password nicknames
      */
+    @SuppressLint("NotifyDataSetChanged")
     fun filterByName(text: String) {
         val filteredList = mutableListOf<Pass_Item>()
 
