@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package pfc.safepass.app
 
 import android.content.Intent
@@ -126,6 +128,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     // Cuando el usuario presione atras se le pedira que lo vuelva a hacer para salir de la aplicacion
+    @Deprecated("Deprecated")
     override fun onBackPressed() {
         if (doubleBackPressed) {
             super.onBackPressed()

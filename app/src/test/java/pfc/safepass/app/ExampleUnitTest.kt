@@ -1,4 +1,4 @@
-package pfc.bautistaczupil.safepass
+package pfc.safepass.app
 
 import org.junit.Test
 

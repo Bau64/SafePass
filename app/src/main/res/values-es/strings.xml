@@ -7,7 +7,6 @@
     <string name="password">Contraseña</string>
     <string name="notes">Notas</string>
     <string name="save">Guardar</string>
-    <string name="password_generator">Generador de contraseñas</string>
     <string name="generate_password">Generar contraseña</string>
     <string name="size">Tamaño</string>
     <string name="uppercase">Mayúsculas</string>
@@ -49,7 +48,6 @@
     <string name="toast_deleted_password">Contraseña enviada a la papelera de reciclaje</string>
     <string name="toast_created_password">Contraseña creada</string>
     <string name="toast_created_press_exit">Presiona otra vez para salir</string>
-    <string name="toast_copied_password">Contraseña copiada</string>
     <string name="edit">Editar</string>
     <string name="delete">Borrar</string>
     <string name="options">Opciones</string>

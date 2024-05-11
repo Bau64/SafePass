@@ -1,3 +1,5 @@
+@file:Suppress("ArrayInDataClass")
+
 package pfc.safepass.app.recycler
 
 data class PassItem (

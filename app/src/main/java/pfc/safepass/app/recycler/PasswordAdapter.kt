@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package pfc.safepass.app.recycler
 
 import android.annotation.SuppressLint

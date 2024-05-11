@@ -1,8 +1,7 @@
+@file:Suppress("DEPRECATION")
+
 package pfc.safepass.app
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
