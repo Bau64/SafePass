@@ -144,9 +144,11 @@ class PasswordAdapter(private var passList: List<PassItem>, context: Context, pr
         }
 
         holder.itemView.setOnClickListener {
-            val itemContext = holder.itemView.context as Activity
-            startActivity(itemContext, Intent(itemContext, ItemDetailsActivity::class.java).apply { putExtra("id", id) }, null)
-            itemContext.overridePendingTransition(R.anim.zoom_in, R.anim.stay)
+            if (!recycledList) {
+                val itemContext = holder.itemView.context as Activity
+                startActivity(itemContext, Intent(itemContext, ItemDetailsActivity::class.java).apply { putExtra("id", id) }, null)
+                itemContext.overridePendingTransition(R.anim.zoom_in, R.anim.stay)
+            }
         }
     }
 
