@@ -13,6 +13,7 @@ class Preferences(context: Context) {
     private val prefsLastSessiontimeout = "last_timeout"
     private var prefsTimeoutActive = "timeout_active"
     private var prefsAppTheme = "app_theme"
+    private var prefsTempSort = "temp_sort"
 
     // Encrypt preferences
     private val masterKey = MasterKey.Builder(context)
@@ -129,5 +130,13 @@ class Preferences(context: Context) {
 
     fun getAppTheme(): Int {
         return prefs.getInt(prefsAppTheme, -1)
+    }
+
+    fun setTempSort(value: Int) {
+        prefs.edit().putInt("temp_sort", value).apply()
+    }
+
+    fun getTempSort(): Int {
+        return prefs.getInt(prefsTempSort, 0)
     }
 }

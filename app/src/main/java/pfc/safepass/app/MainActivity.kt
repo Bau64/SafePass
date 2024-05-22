@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initUI() {
         val prefs = Preferences(applicationContext)
+        prefs.setTempSort(0) // Set default sorting to Alphabetical (A -> Z)
+
         // If there is an existing master password, the login screen will be shown
         if (prefs.getMasterPWD().isNotEmpty()){
             if (prefs.getLoggedStatus() && prefs.isSessionActive() && prefs.getTimeoutState()) {

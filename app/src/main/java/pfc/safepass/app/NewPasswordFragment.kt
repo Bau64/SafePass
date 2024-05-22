@@ -76,6 +76,9 @@ class NewPasswordFragment : Fragment() {
     }
 
     private fun initUI(){
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressed()
+        }
         if (!isCustomImageSet)
             binding.newPasswordImageView.setImageResource(R.drawable.icon_default_password)
         else

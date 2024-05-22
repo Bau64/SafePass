@@ -71,4 +71,9 @@
     <string name="last_modified_date">Última fecha de modificación</string>
     <string name="toast_restored_password">Contraseña restaurada</string>
     <string name="settings_appTheme">Tema de la aplicación</string>
+    <string name="sort_nickname_asc">Apodo (A → Z)</string>
+    <string name="sort_nickname_desc">Apodo (Z → A)</string>
+    <string name="sort_date_asc">Fecha (más recientes primero)</string>
+    <string name="sort_date_desc">Fecha (más antiguas primero)</string>
+    <string name="menuItem_sort">Ordenar por</string>
 </resources>

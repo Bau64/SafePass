@@ -29,8 +29,7 @@
             android:parentActivityName=".MainMenuActivity" />
         <activity
             android:name=".NewPasswordActivity"
-            android:exported="false"
-            android:parentActivityName=".MainMenuActivity" />
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

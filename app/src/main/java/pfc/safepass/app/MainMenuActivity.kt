@@ -10,19 +10,25 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import pfc.safepass.app.databinding.MainMenuBinding
 import pfc.safepass.app.preferences.Preferences
+import pfc.safepass.app.recycler.PassItem
 import pfc.safepass.app.recycler.PasswordAdapter
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class MainMenuActivity : AppCompatActivity() {
     private lateinit var binding: MainMenuBinding
     private lateinit var dataBaseHelper: DataBaseHelper
     private lateinit var passwordAdapter: PasswordAdapter
     private lateinit var searchView: SearchView
+    private lateinit var sortedList: List<PassItem>
+    private lateinit var prefs: Preferences
     private var doubleBackPressed = false
     private val utils = Utils()
 
@@ -52,7 +58,7 @@ class MainMenuActivity : AppCompatActivity() {
                     if (newText!!.isNotEmpty())
                         passwordAdapter.filterByName(newText)
                     else
-                        passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
+                        sortItems(true)
                     return true
                 }
             })
@@ -66,6 +72,7 @@ class MainMenuActivity : AppCompatActivity() {
 
                 override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
                     utils.hideKeyboard(this@MainMenuActivity)
+                    sortItems(true)
                     return true
                 }
             })
@@ -94,12 +101,51 @@ class MainMenuActivity : AppCompatActivity() {
               gotoRecycleBin()
               return true
           }
+          R.id.menuItem_sort -> {
+              sortItems(false)
+              return true
+          }
 
           else -> super.onOptionsItemSelected(item)
         }
     }
 
+    /**
+     * Shows an AlertDialog with options for sorting the password list
+     */
+    private fun sortItems(skipBuilder: Boolean) {
+        sortedList = dataBaseHelper.getAllPassword(false)
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        if (!skipBuilder) {
+            val options = arrayOf(getString(R.string.sort_nickname_asc), getString(R.string.sort_nickname_desc), getString(R.string.sort_date_asc), getString(R.string.sort_date_desc))
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.menuItem_sort))
+
+            builder.setSingleChoiceItems(options, prefs.getTempSort()) { dialog, option ->
+                prefs.setTempSort(option)
+                when (prefs.getTempSort()) {
+                    1 -> passwordAdapter.refreshData(sortedList.sortedByDescending { it.nickname })
+                    2 -> passwordAdapter.refreshData(sortedList.sortedByDescending { LocalDate.parse(it.date, formatter) })
+                    3 -> passwordAdapter.refreshData(sortedList.sortedBy { LocalDate.parse(it.date, formatter) })
+                    else -> passwordAdapter.refreshData(sortedList.sortedBy { it.nickname })
+                }
+                dialog.dismiss()
+            }
+
+            val dialog = builder.create()
+            dialog.show()
+        } else {
+            when (prefs.getTempSort()) {
+                1 -> passwordAdapter.refreshData(sortedList.sortedByDescending { it.nickname })
+                2 -> passwordAdapter.refreshData(sortedList.sortedByDescending { LocalDate.parse(it.date, formatter) })
+                3 -> passwordAdapter.refreshData(sortedList.sortedBy { LocalDate.parse(it.date, formatter) })
+                else -> passwordAdapter.refreshData(sortedList.sortedBy { it.nickname })
+            }
+        }
+    }
+
     private fun goToLogin() {
+        prefs.setTempSort(0)
         startActivity(Intent(this, LoginActivity::class.java))
         overridePendingTransition(R.anim.zoom_in, R.anim.zoom_out)
     }
@@ -120,8 +166,10 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun initUI(){
+        prefs = Preferences(applicationContext)
         dataBaseHelper = DataBaseHelper(this)
         passwordAdapter = PasswordAdapter(dataBaseHelper.getAllPassword(false), this, false)
+        sortItems(true)
         binding.recyclerview.layoutManager = LinearLayoutManager(this)
         binding.recyclerview.adapter = passwordAdapter
         firstpwdHelper()
@@ -144,7 +192,7 @@ class MainMenuActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         binding.toolbar.collapseActionView()
-        passwordAdapter.refreshData(dataBaseHelper.getAllPassword(false))
+        sortItems(true)
         firstpwdHelper()
     }
 

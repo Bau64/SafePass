@@ -71,4 +71,9 @@
     <string name="last_modified_date">Last modified date</string>
     <string name="toast_restored_password">Password restored</string>
     <string name="settings_appTheme">App theme</string>
+    <string name="sort_nickname_asc">Nickname (A → Z)</string>
+    <string name="sort_nickname_desc">Nickname (Z → A)</string>
+    <string name="sort_date_asc">Date (newest first)</string>
+    <string name="sort_date_desc">Date (oldest first)</string>
+    <string name="menuItem_sort">Sort by</string>
 </resources>
